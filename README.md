@@ -1,6 +1,6 @@
 # LG WebOs Client 0.4.0
 
-[![Build Status](https://travis-ci.com/kziemianek/lg-webos-client.svg?branch=main)](https://travis-ci.com/kziemianek/lg-webos-client)
+[![Build Status](https://travis-ci.com/samuel-cavalcanti/lg-webos-client.svg?branch=main)](https://travis-ci.com/samuel-cavalcanti/lg-webos-client)
 
 
 Simple LG webOS client written in Rust.
