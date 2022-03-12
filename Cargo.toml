@@ -2,7 +2,7 @@
 name = "lg-webos-client"
 version = "0.4.0"
 authors = ["kasper.ziemianek@gmail.com", "gavinpease@gmail.com"]
-edition = "2018"
+edition = "2021"
 description = "LG webOS client"
 readme = "README.md"
 repository = "https://github.com/kziemianek/lg-webos-client"
@@ -13,13 +13,15 @@ keywords = ["lg", "webos", "bindings"]
 tokio-tungstenite = "0.14.0"
 futures = "0.3.14"
 futures-util = "0.3"
-tokio = { version = "1.2.0", default-features = false, features = ["rt"] }
+tokio = { version = "1.17.0", features = ["full"] }
 url = "2.1.0"
 serde_json = "1.0"
-serde = { version = "1.0.123", features = ["derive"]}
+serde = { version = "1.0.123", features = ["derive"] }
 pinky-swear = "5.1.0"
-log = "0.4"
+log = "0.4.0"
+env_logger = "0.8.4"
+
 
 [dev-dependencies]
-env_logger = "0.8.3"
+
 tokio = { version = "1.2.0", default-features = false, features = ["full"] }

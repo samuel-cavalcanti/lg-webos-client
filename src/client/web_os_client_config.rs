@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
 pub struct WebOsClientConfig {
@@ -15,15 +15,12 @@ impl ::std::default::Default for WebOsClientConfig {
 impl WebOsClientConfig {
     /// Creates a new client configuration
     pub fn new(address: String, key: Option<String>) -> WebOsClientConfig {
-
         WebOsClientConfig { address, key }
     }
 }
 
 impl Clone for WebOsClientConfig {
     fn clone(&self) -> Self {
-        let addr = self.address.clone();
-        let key = self.key.clone();
-        WebOsClientConfig { address: addr, key }
+        WebOsClientConfig { address: self.address.clone(), key: self.key.clone() }
     }
 }

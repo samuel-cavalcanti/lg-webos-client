@@ -1,6 +1,6 @@
 {
     "type": "register",
-    "id": "0",
+    "id": 0,
     "payload": {
         "forcePairing": false,
         "pairingType": "PROMPT",
