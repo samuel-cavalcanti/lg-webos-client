@@ -1,4 +1,4 @@
-# LG WebOs Client 0.4.0
+# LG WebOs Client BETA
 
 [![Build Status](https://app.travis-ci.com/samuel-cavalcanti/lg-webos-client.svg?branch=main)](https://app.travis-ci.com/samuel-cavalcanti/lg-webos-client)
 
