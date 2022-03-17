@@ -8,9 +8,9 @@ pub struct LaunchApp {
 
 
 impl LGCommandRequest for LaunchApp {
-    fn to_command_request(&self, id: u8) -> CommandRequest {
+    fn to_command_request(&self) -> CommandRequest {
         CommandRequest {
-            id,
+  
             r#type: REQUEST_TYPE.to_string(),
             uri: String::from("ssap://system.launcher/launch"),
             payload: Some(json!({ "id": self.app_id, "params": self.parameters })),

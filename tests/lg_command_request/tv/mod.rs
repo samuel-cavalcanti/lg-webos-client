@@ -1,15 +1,13 @@
-use lg_webos_client::{lg_command::{CommandRequest, LGCommandRequest}};
-use serde_json::json;
-use lg_webos_client::lg_command::{ REQUEST_TYPE};
-use lg_webos_client::lg_command::commands;
 use crate::lg_command_request::assert_command_request;
-
+use lg_webos_client::lg_command::commands;
+use lg_webos_client::lg_command::REQUEST_TYPE;
+use lg_webos_client::lg_command::{CommandRequest, LGCommandRequest};
+use serde_json::json;
 
 #[test]
 fn test_set_open_channel() {
     let open_channel_id = "1_21_6_1_1519_48608_1519".to_string();
     let expected = CommandRequest {
-        id: 13,
         r#type: REQUEST_TYPE.to_string(),
         uri: String::from("ssap://tv/openChannel"),
         payload: Some(json!({ "channelId": open_channel_id.clone() })),
@@ -18,109 +16,83 @@ fn test_set_open_channel() {
     let result = commands::tv::SetOpenChannel {
         channel_id: open_channel_id,
     }
-        .to_command_request(expected.id);
+    .to_command_request();
 
     assert_command_request(result, expected);
 }
 
 #[test]
 fn test_switch_input() {
-    let input_id = "test".to_string();
+    for input_id in ["test", "123", "testing"] {
+        let input_id = input_id.to_string();
 
-    let expected = CommandRequest {
-        id: 50,
-        r#type: REQUEST_TYPE.to_string(),
-        uri: String::from("ssap://tv/switchInput"),
-        payload: Some(json!({ "inputId":input_id.clone() })),
-    };
+        let expected = CommandRequest {
+            r#type: REQUEST_TYPE.to_string(),
+            uri: String::from("ssap://tv/switchInput"),
+            payload: Some(json!({ "inputId":input_id.clone() })),
+        };
 
-    let result = commands::tv::SwitchInput { input_id }.to_command_request(expected.id);
+        let result = commands::tv::SwitchInput { input_id }.to_command_request();
 
-    assert_command_request(result, expected);
-}
-
-
-#[test]
-fn test_get_channel_list() {
-    let expected = CommandRequest {
-        id: 43,
-        r#type: REQUEST_TYPE.to_string(),
-        uri: String::from("ssap://tv/getChannelList"),
-        payload: None,
-    };
-
-    let result = commands::tv::GetChannelList.to_command_request(expected.id);
-
-    assert_command_request(result, expected);
-}
-
-#[test]
-fn test_get_current_channel_information() {
-    let expected = CommandRequest {
-        id: 33,
-        r#type: REQUEST_TYPE.to_string(),
-        uri: String::from("ssap://tv/getCurrentChannel"),
-        payload: None,
-    };
-
-    let result = commands::tv::GetCurrentChannelInformation.to_command_request(expected.id);
-
-    assert_command_request(result, expected);
+        assert_command_request(result, expected);
+    }
 }
 
 #[test]
 fn test_get_open_channel_information() {
-    let channel_id = "test".to_string();
-    let expected = CommandRequest {
-        id: 254,
-        r#type: REQUEST_TYPE.to_string(),
-        uri: String::from("ssap://tv/openChannel"),
-        payload: Some(json!({ "channelId": channel_id.clone() })),
-    };
+    for channel_id in ["Hello", "My", "Test"] {
+        let channel_id = channel_id.to_string();
+        let expected = CommandRequest {
+            r#type: REQUEST_TYPE.to_string(),
+            uri: String::from("ssap://tv/openChannel"),
+            payload: Some(json!({ "channelId": channel_id.clone() })),
+        };
 
-    let result = commands::tv::GetOpenChannelInformation { channel_id }.to_command_request(expected.id);
+        let result = commands::tv::GetOpenChannelInformation { channel_id }.to_command_request();
 
-    assert_command_request(result, expected);
+        assert_command_request(result, expected);
+    }
 }
 
 #[test]
-fn test_channel_up() {
-    let expected =  CommandRequest {
-        id:1,
-        r#type: REQUEST_TYPE.to_string(),
-        uri: String::from("ssap://tv/channelUp"),
-        payload: None,
-    };
+fn no_payload_commands() {
+    let expected_requests = vec![
+        CommandRequest {
+            r#type: REQUEST_TYPE.to_string(),
+            uri: String::from("ssap://tv/getChannelList"),
+            payload: None,
+        },
+        CommandRequest {
+            r#type: REQUEST_TYPE.to_string(),
+            uri: String::from("ssap://tv/getCurrentChannel"),
+            payload: None,
+        },
+        CommandRequest {
+            r#type: REQUEST_TYPE.to_string(),
+            uri: String::from("ssap://tv/channelUp"),
+            payload: None,
+        },
+        CommandRequest {
+            r#type: REQUEST_TYPE.to_string(),
+            uri: String::from("ssap://tv/channelDown"),
+            payload: None,
+        },
+        CommandRequest {
+            r#type: REQUEST_TYPE.to_string(),
+            uri: String::from("ssap://tv/getExternalInputList"),
+            payload: None,
+        },
+    ];
 
-    let result = commands::tv::ChannelUp.to_command_request(expected.id);
+    let commands: Vec<Box<dyn LGCommandRequest>> = vec![
+        Box::new(commands::tv::GetChannelList),
+        Box::new(commands::tv::GetCurrentChannelInformation),
+        Box::new(commands::tv::ChannelUp),
+        Box::new(commands::tv::ChannelDown),
+        Box::new(commands::tv::GetExternalInputList),
+    ];
 
-    assert_command_request(result,expected);
-}
-
-#[test]
-fn test_channel_down() {
-    let expected = CommandRequest {
-        id: 2,
-        r#type: REQUEST_TYPE.to_string(),
-        uri: String::from("ssap://tv/channelDown"),
-        payload: None,
-    };
-
-    let result = commands::tv::ChannelDown.to_command_request(expected.id);
-
-    assert_command_request(result, expected);
-}
-
-#[test]
-fn test_get_external_input_list() {
-    let expected = CommandRequest {
-        id: 0,
-        r#type: REQUEST_TYPE.to_string(),
-        uri: String::from("ssap://tv/getExternalInputList"),
-        payload: None,
-    };
-
-    let result = commands::tv::GetExternalInputList.to_command_request(expected.id);
-
-    assert_command_request(result, expected);
+    for (command, expected_request) in commands.iter().zip(expected_requests) {
+        assert_command_request(command.to_command_request(), expected_request);
+    }
 }

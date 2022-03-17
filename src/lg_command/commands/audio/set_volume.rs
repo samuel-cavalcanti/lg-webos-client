@@ -8,9 +8,9 @@ pub struct SetVolume {
 }
 
 impl LGCommandRequest for SetVolume {
-    fn to_command_request(&self, id: u8) -> CommandRequest {
+    fn to_command_request(&self) -> CommandRequest {
         CommandRequest {
-            id,
+
             r#type: REQUEST_TYPE.to_string(),
             uri: String::from("ssap://audio/setVolume"),
             payload: Some(json!({ "volume": self.volume })),

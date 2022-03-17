@@ -1,23 +1,25 @@
-use serde_json::json;
-use lg_webos_client::lg_command::{CommandRequest, LGCommandRequest, REQUEST_TYPE};
-use lg_webos_client::lg_command::commands;
 use crate::lg_command_request::assert_command_request;
+use lg_webos_client::lg_command::commands;
+use lg_webos_client::lg_command::{CommandRequest, LGCommandRequest, REQUEST_TYPE};
+use serde_json::json;
 
 #[test]
 fn test_create_toast_command() {
-    let toast = commands::system_notifications::CreateToast {
-        message: "Olá TV!".to_string(),
-    };
+    for message in ["Hello", "My", "TV"] {
+        let message = message.to_string();
 
-    let expected = CommandRequest {
-        id: 10,
-        r#type: REQUEST_TYPE.to_string(),
-        uri: "ssap://system.notifications/createToast".to_string(),
-        payload: Some(json!({"message":toast.message})),
-    };
+        let toast = commands::system_notifications::CreateToast {
+            message: message.clone(),
+        };
 
-    let result = toast.to_command_request(expected.id);
+        let expected = CommandRequest {
+            r#type: REQUEST_TYPE.to_string(),
+            uri: "ssap://system.notifications/createToast".to_string(),
+            payload: Some(json!({ "message": message })),
+        };
 
-    assert_command_request(result, expected);
+        let result = toast.to_command_request();
+
+        assert_command_request(result, expected);
+    }
 }
-

@@ -8,9 +8,8 @@ pub struct GetOpenChannelInformation {
 }
 
 impl LGCommandRequest for GetOpenChannelInformation {
-    fn to_command_request(&self, id: u8) -> CommandRequest {
+    fn to_command_request(&self) -> CommandRequest {
         CommandRequest {
-            id,
             r#type: REQUEST_TYPE.to_string(),
             uri: String::from("ssap://tv/openChannel"),
             payload: Some(json!({ "channelId": self.channel_id })),

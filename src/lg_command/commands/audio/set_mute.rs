@@ -8,9 +8,9 @@ pub struct SetMute {
 }
 
 impl LGCommandRequest for SetMute {
-    fn to_command_request(&self, id: u8) -> CommandRequest {
+    fn to_command_request(&self) -> CommandRequest {
         CommandRequest {
-            id,
+
             r#type: REQUEST_TYPE.to_string(),
             uri: String::from("ssap://audio/setMute"),
             payload: Some(json!({ "mute": self.mute })),

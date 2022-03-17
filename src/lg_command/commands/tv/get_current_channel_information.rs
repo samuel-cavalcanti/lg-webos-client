@@ -5,9 +5,9 @@ pub struct  GetCurrentChannelInformation;
 
 
 impl LGCommandRequest for GetCurrentChannelInformation {
-    fn to_command_request(&self, id: u8) -> CommandRequest {
+    fn to_command_request(&self) -> CommandRequest {
         CommandRequest {
-            id,
+            
             r#type: REQUEST_TYPE.to_string(),
             uri: String::from("ssap://tv/getCurrentChannel"),
             payload: None,

@@ -8,9 +8,8 @@ pub struct SwitchInput {
 }
 
 impl LGCommandRequest for SwitchInput {
-    fn to_command_request(&self, id: u8) -> CommandRequest {
+    fn to_command_request(&self) -> CommandRequest {
         CommandRequest {
-            id,
             r#type: REQUEST_TYPE.to_string(),
             uri: String::from("ssap://tv/switchInput"),
             payload: Some(json!({ "inputId":self.input_id })),
