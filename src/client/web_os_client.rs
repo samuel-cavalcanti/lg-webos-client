@@ -1,58 +1,49 @@
-
-
-
+use std::cell::RefCell;
 
 use log::debug;
-use pinky_swear::{ PinkySwear};
+
 use serde_json::{json, Value};
 
-
-
-use crate::client::handshake::do_the_handshake;
 use crate::client::web_os_client_config::WebOsClientConfig;
 
-use crate::client::web_os_request_sender::{connect_to_tv, init_sender_and_listener, WebOsTVRequestSender};
+use crate::client::web_os_network::WebOsMultiThreadSocketConnection;
+use crate::lg_command::LGCommandRequest;
 
-use crate::lg_command::{LGCommandRequest};
-
-
+use super::web_os_network::{WebOsTvRequestCommunication, WebSocketErrorAction};
 
 /// Client for interacting with TV
 pub struct WebOsClient {
-  tv_sender: WebOsTVRequestSender,
-  pub key: Option<String>,
+    pub key: Option<String>,
+    tv_sender: RefCell<Box<dyn WebOsTvRequestCommunication>>,
 }
 
 impl WebOsClient {
-
-    pub async fn connect(config: WebOsClientConfig) -> WebOsClient {
-
-        let ws_stream = connect_to_tv(&config.address).await;
+    pub async fn connect(config: WebOsClientConfig) -> Result<WebOsClient, String> {
+        let tv_connection = WebOsMultiThreadSocketConnection::connect_to_tv(config).await?;
+        // let pointer_input_connection = WebOsPointerInputConnection::connect(&tv_connection.sender).await?;
         debug!("connected with TV");
-        let mut sender = init_sender_and_listener(ws_stream);
-        sender.key = config.key;
-        do_the_handshake(&mut sender).await;
 
-        debug!("WebSocket handshake has been successfully completed");
-
-        let client = WebOsClient{
-            key:sender.key.clone(),
-            tv_sender:sender,
-
+        let client = WebOsClient {
+            key: Some(tv_connection.key),
+            tv_sender: RefCell::new(tv_connection.sender),
         };
 
-        client
+        Ok(client)
     }
 
     /// Sends single lg_command and waits for response
-    pub async fn send_command_to_tv(&self, cmd: Box<dyn LGCommandRequest>) -> Value  {
+    pub async fn send_command_to_tv(
+        &self,
+        cmd: Box<dyn LGCommandRequest>,
+    ) -> Result<Value, WebSocketErrorAction> {
+        // let mut sender = &mut self.tv_sender;
 
-        let promise = self.tv_sender.send_json(json!(cmd.to_command_request(0))).await;
+        let promise = self
+            .tv_sender
+            .borrow_mut()
+            .send_json_request(json!(cmd.to_command_request()))
+            .await?;
 
-        promise.await
+        Ok(promise.await)
     }
-
-
-
 }
-
