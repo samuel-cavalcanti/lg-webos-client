@@ -8,16 +8,14 @@ use log::debug;
 use pinky_swear::{Pinky, PinkySwear};
 use serde_json::Value;
 
-use crate::client::{WebSocketErrorAction, web_os_network::{WebOsSocketTvSend}};
+use crate::client::{web_os_network::WebOsSocketTvSend, WebSocketErrorAction};
 
 use super::web_os_tv_request_communication::WebOsTvRequestCommunication;
-
 
 pub struct WebOsTVRequestSender {
     write: Box<dyn WebOsSocketTvSend + Send>,
     command_id: Arc<Mutex<u8>>,
     ongoing_requests: Arc<Mutex<HashMap<u8, Pinky<Value>>>>,
-
 }
 
 impl WebOsTVRequestSender {
@@ -30,7 +28,6 @@ impl WebOsTVRequestSender {
             write: web_socket_send,
             command_id,
             ongoing_requests,
-
         }
     }
 
@@ -56,7 +53,6 @@ impl WebOsTVRequestSender {
         *guard = (1 + value) % 255;
     }
 }
-
 
 #[async_trait]
 impl WebOsTvRequestCommunication for WebOsTVRequestSender {

@@ -5,8 +5,7 @@ use serde_json::Value;
 use tokio::net::TcpStream;
 use tokio_tungstenite::{tungstenite::Message, MaybeTlsStream, WebSocketStream};
 
-use super::{send_trait::WebOsSocketTvSend, error_action::WebSocketErrorAction};
-
+use super::{error_action::WebSocketErrorAction, send_trait::WebOsSocketTvSend};
 
 pub struct WebSocketTvSend {
     write: SplitSink<WebSocketStream<MaybeTlsStream<TcpStream>>, Message>,

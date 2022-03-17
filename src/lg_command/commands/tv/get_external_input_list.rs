@@ -1,5 +1,5 @@
-use crate::{lg_command::{CommandRequest, LGCommandRequest}};
 use crate::lg_command::REQUEST_TYPE;
+use crate::lg_command::{CommandRequest, LGCommandRequest};
 
 pub struct GetExternalInputList;
 

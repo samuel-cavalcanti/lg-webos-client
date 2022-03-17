@@ -21,6 +21,9 @@ impl WebOsClientConfig {
 
 impl Clone for WebOsClientConfig {
     fn clone(&self) -> Self {
-        WebOsClientConfig { address: self.address.clone(), key: self.key.clone() }
+        WebOsClientConfig {
+            address: self.address.clone(),
+            key: self.key.clone(),
+        }
     }
 }

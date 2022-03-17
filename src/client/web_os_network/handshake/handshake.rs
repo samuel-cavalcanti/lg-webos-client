@@ -1,11 +1,8 @@
-
+use crate::client::web_os_network::{WebOsSocketTvReceive, WebOsSocketTvSend};
 use log::debug;
 use serde_json::Value;
-use crate::client::web_os_network::{WebOsSocketTvReceive, WebOsSocketTvSend};
-
 
 pub struct HandShake;
-
 
 const ERROR_MESSAGE: &str = "Unable do make HandShake";
 
@@ -33,7 +30,7 @@ impl HandShake {
         }
 
         let first_package = HandShake::try_to_receive(receiver).await?;
-        debug!("First JSON {}",first_package);
+        debug!("First JSON {}", first_package);
         let is_register_response = HandShake::is_register_response(first_package["type"].as_str())?;
 
         if is_register_response {
@@ -41,7 +38,7 @@ impl HandShake {
         }
 
         let second_package = HandShake::try_to_receive(receiver).await?;
-        debug!("Second JSON {}",second_package);
+        debug!("Second JSON {}", second_package);
 
         return HandShake::try_to_parse_response_key(second_package);
     }
@@ -53,8 +50,8 @@ impl HandShake {
                     return Ok(true);
                 } else if response_type == "error" {
                     /*
-                        when the user not authorize the app, The Tv returns "type":"error"
-                     */
+                       when the user not authorize the app, The Tv returns "type":"error"
+                    */
                     return Ok(true);
                 }
                 Ok(false)
@@ -102,4 +99,3 @@ impl HandShake {
             .expect("Could not parse handshake json")
     }
 }
-

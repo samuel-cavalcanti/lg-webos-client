@@ -1,4 +1,4 @@
-mod open_browser;
 mod launch_app;
-pub use open_browser::OpenBrowser;
+mod open_browser;
 pub use launch_app::LaunchApp;
+pub use open_browser::OpenBrowser;

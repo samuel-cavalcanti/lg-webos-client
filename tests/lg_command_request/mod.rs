@@ -1,13 +1,12 @@
-use lg_webos_client::lg_command::{CommandRequest};
+use lg_webos_client::lg_command::CommandRequest;
 
+mod audio;
 mod media_controls;
+mod system;
+mod system_launcher;
 mod system_notifications;
 mod tv;
-mod audio;
-mod system_launcher;
 mod web_os_services;
-mod system;
-
 
 fn assert_command_request(result: CommandRequest, expected: CommandRequest) {
     assert_eq!(result.uri, expected.uri);

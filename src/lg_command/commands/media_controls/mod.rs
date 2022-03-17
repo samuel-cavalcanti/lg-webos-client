@@ -1,11 +1,11 @@
-mod play;
-mod stop;
-mod pause;
-mod rewind;
 mod fast_forward;
+mod pause;
+mod play;
+mod rewind;
+mod stop;
 
-pub use play::Play;
-pub use pause::Pause;
-pub use stop::Stop;
-pub use rewind::Rewind;
 pub use fast_forward::FastForward;
+pub use pause::Pause;
+pub use play::Play;
+pub use rewind::Rewind;
+pub use stop::Stop;

@@ -1,5 +1,4 @@
-use super::{ WebOsTvRequestCommunication};
-
+use super::WebOsTvRequestCommunication;
 
 pub struct Connection {
     pub key: String,

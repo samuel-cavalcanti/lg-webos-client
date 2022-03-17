@@ -43,12 +43,10 @@ fn no_payload_commands() {
         },
     ];
 
-    let commands:Vec<Box<dyn LGCommandRequest>> = vec![
+    let commands: Vec<Box<dyn LGCommandRequest>> = vec![
         Box::new(commands::web_os_services::GetCurrentServicesInformationList),
         Box::new(commands::web_os_services::GetPointerInputSocketUri),
     ];
-
-    
 
     for (command, request) in commands.iter().zip(expected_requests) {
         assert_command_request(command.to_command_request(), request);

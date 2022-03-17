@@ -31,19 +31,18 @@ fn test_all_commands() {
             r#type: REQUEST_TYPE.to_string(),
             uri: String::from("ssap://media.controls/fastForward"),
             payload: None,
-        }
+        },
     ];
 
-    let commands:Vec<Box<dyn LGCommandRequest>> = vec![
+    let commands: Vec<Box<dyn LGCommandRequest>> = vec![
         Box::new(commands::media_controls::Play),
         Box::new(commands::media_controls::Stop),
         Box::new(commands::media_controls::Pause),
         Box::new(commands::media_controls::Rewind),
-        Box::new(commands::media_controls::FastForward)
+        Box::new(commands::media_controls::FastForward),
     ];
 
-    for (command, expected_request) in commands.iter().zip(expected){
-
+    for (command, expected_request) in commands.iter().zip(expected) {
         assert_command_request(command.to_command_request(), expected_request);
-    }   
+    }
 }

@@ -1,10 +1,9 @@
 use async_trait::async_trait;
 
-use serde_json::Value;
-use crate::client::web_os_network::{WebOsSocketTvReceive, WebOsSocketTvSend};
 use crate::client::web_os_network::handshake::handshake::HandShake;
+use crate::client::web_os_network::{WebOsSocketTvReceive, WebOsSocketTvSend};
 use crate::client::WebSocketErrorAction;
-
+use serde_json::Value;
 
 struct MockNewClientReceive {
     number_of_responses: u8,
@@ -20,36 +19,25 @@ impl MockNewClientReceive {
         let error_json =
             r#"{"error":"403 Error: User rejected pairing","id":0,"payload":{},"type":"error"}"#;
 
-        if number_of_responses ==0{
-
+        if number_of_responses == 0 {
             if self.only_one_response {
                 Ok(serde_json::from_str::<Value>(&register_json).unwrap())
-            }
-            else{
+            } else {
                 Ok(serde_json::from_str::<Value>(&first_json).unwrap())
             }
-
-        }
-        else if number_of_responses == 1{
-
-            if self.only_one_response{
+        } else if number_of_responses == 1 {
+            if self.only_one_response {
                 Err(WebSocketErrorAction::Fatal)
-            }
-            else {
-                if self.client_gonna_refuse{
+            } else {
+                if self.client_gonna_refuse {
                     Ok(serde_json::from_str::<Value>(&error_json).unwrap())
-                }
-                else{
+                } else {
                     Ok(serde_json::from_str::<Value>(&register_json).unwrap())
                 }
-
             }
-        }
-        else {
+        } else {
             Err(WebSocketErrorAction::Fatal)
         }
-
-
     }
 }
 
@@ -127,5 +115,4 @@ async fn test_fail_new_client() {
     let key = HandShake::do_the_handshake(&mut sender, &mut receiver, None).await;
     assert_eq!(receiver.number_of_responses, 2);
     assert_eq!(key.is_err(), true);
-
 }

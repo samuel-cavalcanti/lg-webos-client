@@ -8,11 +8,12 @@ use std::sync::{Arc, Mutex};
 
 use tokio_tungstenite::{connect_async, MaybeTlsStream, WebSocketStream};
 
-
+use crate::client::web_os_network::web_os_request_response_cycle::{
+    WebOsSocketResponseListener, WebOsTVRequestSender,
+};
+use crate::client::web_os_network::web_os_tv_socket::{WebSocketTvReceive, WebSocketTvSend};
 use crate::client::web_os_network::WebOsSocketTvReceive;
 use crate::client::{WebOsClientConfig, WebSocketErrorAction};
-use crate::client::web_os_network::web_os_request_response_cycle::{WebOsSocketResponseListener, WebOsTVRequestSender};
-use crate::client::web_os_network::web_os_tv_socket::{WebSocketTvSend, WebSocketTvReceive};
 
 use super::connection::Connection;
 use super::handshake::HandShake;
@@ -37,11 +38,8 @@ impl WebOsMultiThreadSocketConnection {
         let ongoing_requests = Arc::new(Mutex::new(HashMap::new()));
 
         let listener = WebOsSocketResponseListener::new(ongoing_requests.clone());
-        let request_sender = WebOsTVRequestSender::new(
-            Box::new(sender),
-            Arc::new(Mutex::new(0)),
-            ongoing_requests,
-        );
+        let request_sender =
+            WebOsTVRequestSender::new(Box::new(sender), Arc::new(Mutex::new(0)), ongoing_requests);
 
         tokio::spawn(async move {
             WebOsMultiThreadSocketConnection::listener_loop(listener, web_socket_receive).await;
