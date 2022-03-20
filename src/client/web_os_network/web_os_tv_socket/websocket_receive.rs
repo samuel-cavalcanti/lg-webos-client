@@ -7,24 +7,12 @@ use tokio_tungstenite::{MaybeTlsStream, WebSocketStream};
 
 use super::{error_action::WebSocketErrorAction, receive_trait::WebOsSocketTvReceive};
 
-pub struct WebSocketTvReceive {
-    stream: SplitStream<WebSocketStream<MaybeTlsStream<TcpStream>>>,
-}
-
-impl WebSocketTvReceive {
-    pub fn new(
-        stream: SplitStream<WebSocketStream<MaybeTlsStream<TcpStream>>>,
-    ) -> WebSocketTvReceive {
-        WebSocketTvReceive { stream }
-    }
-}
-
 #[async_trait]
-impl WebOsSocketTvReceive for WebSocketTvReceive {
+impl WebOsSocketTvReceive for SplitStream<WebSocketStream<MaybeTlsStream<TcpStream>>> {
     async fn receive(&mut self) -> Result<Value, WebSocketErrorAction> {
         // let mut stream = stream;
 
-        match self.stream.next().await {
+        match self.next().await {
             Some(result_message) => match result_message {
                 Ok(message) => match message.into_text() {
                     Ok(text_message) => {

@@ -56,7 +56,7 @@ struct MockSend;
 
 #[async_trait]
 impl WebOsSocketTvSend for MockSend {
-    async fn send(&mut self, _: Value) -> Result<(), WebSocketErrorAction> {
+    async fn send_text(&mut self, _: String) -> Result<(), WebSocketErrorAction> {
         Ok(())
     }
 }

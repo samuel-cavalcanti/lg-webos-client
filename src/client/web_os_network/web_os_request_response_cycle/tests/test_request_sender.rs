@@ -3,7 +3,7 @@ use crate::client::web_os_network::{
 };
 use crate::client::WebSocketErrorAction;
 use async_trait::async_trait;
-use serde_json::{json, Value};
+use serde_json::{json};
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 
@@ -11,7 +11,7 @@ struct MockTVSend;
 
 #[async_trait]
 impl WebOsSocketTvSend for MockTVSend {
-    async fn send(&mut self, _: Value) -> Result<(), WebSocketErrorAction> {
+    async fn send_text(&mut self, _: String) -> Result<(), WebSocketErrorAction> {
         Ok(())
     }
 }

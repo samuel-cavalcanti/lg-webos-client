@@ -25,7 +25,13 @@ impl HandShake {
         */
         let handshake_request = HandShake::get_handshake_request(key);
 
-        if let Err(_) = sender.send(handshake_request).await {
+        if let Err(_) = sender
+            .send_text(
+                serde_json::to_string(&handshake_request)
+                    .expect("Unable to Convert handshake_request to String"),
+            )
+            .await
+        {
             return Err(ERROR_MESSAGE.to_string());
         }
 

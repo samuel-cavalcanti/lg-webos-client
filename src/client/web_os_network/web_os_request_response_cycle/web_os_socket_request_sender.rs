@@ -4,7 +4,7 @@ use std::{
 };
 
 use async_trait::async_trait;
-use log::debug;
+use log::{debug, error};
 use pinky_swear::{Pinky, PinkySwear};
 use serde_json::Value;
 
@@ -66,8 +66,16 @@ impl WebOsTvRequestCommunication for WebOsTVRequestSender {
         json["id"] = Value::from(command_id);
         debug!("sending json {}", json);
 
-        if let Err(e) = self.write.send(json).await {
-            return Err(e);
+        match serde_json::to_string(&json) {
+            Ok(json_string) => {
+                if let Err(e) = self.write.send_text(json_string).await {
+                    return Err(e);
+                }
+            }
+            Err(e) => {
+                error!("Unable to convert to string {:?}", e);
+                return Err(WebSocketErrorAction::Continue);
+            }
         }
 
         let (promise, pinky) = PinkySwear::<Value>::new();
