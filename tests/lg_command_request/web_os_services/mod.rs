@@ -2,6 +2,7 @@ use crate::lg_command_request::assert_command_request;
 use lg_webos_client::lg_command::{CommandRequest, LGCommandRequest};
 
 use lg_webos_client::lg_command::{request_commands, REQUEST_TYPE};
+use serde_json::json;
 
 #[test]
 fn test_set_display_3d() {
@@ -51,4 +52,48 @@ fn no_payload_commands() {
     for (command, request) in commands.iter().zip(expected_requests) {
         assert_command_request(command.to_command_request(), request);
     }
+}
+
+#[test]
+fn insert_text() {
+
+    let expected_requests = vec![
+        CommandRequest {
+            r#type: REQUEST_TYPE.to_string(),
+            uri: String::from("ssap://com.webos.service.ime/insertText"),
+            payload: Some(json!(
+                {
+                    "replace":0,
+                    "text": String::from("test")
+                }
+            )),
+        },
+        CommandRequest {
+            r#type: REQUEST_TYPE.to_string(),
+            uri: String::from("ssap://com.webos.service.ime/insertText"),
+            payload: Some(json!(
+                {
+                    "replace":1,
+                    "text": String::from("test 2")
+                }
+            )),
+        },
+    ];
+
+    let commands: Vec<Box<dyn LGCommandRequest>> = vec![
+        Box::new(request_commands::web_os_services::InsertText {
+            text: "test".to_string(),
+            replace: false,
+        }),
+        Box::new(request_commands::web_os_services::InsertText {
+            text: "test 2".to_string(),
+            replace: true,
+        }),
+    ];
+
+   
+    for (command, request) in commands.iter().zip(expected_requests) {
+        assert_command_request(command.to_command_request(), request);
+    }
+
 }
