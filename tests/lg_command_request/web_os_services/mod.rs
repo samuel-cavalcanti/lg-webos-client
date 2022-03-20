@@ -42,11 +42,17 @@ fn no_payload_commands() {
             uri: String::from("ssap://com.webos.service.networkinput/getPointerInputSocket"),
             payload: None,
         },
+        CommandRequest {
+            r#type: REQUEST_TYPE.to_string(),
+            uri: String::from("ssap://com.webos.service.ime/sendEnterKey"),
+            payload: None,
+        },
     ];
 
     let commands: Vec<Box<dyn LGCommandRequest>> = vec![
         Box::new(request_commands::web_os_services::GetCurrentServicesInformationList),
         Box::new(request_commands::web_os_services::GetPointerInputSocketUri),
+        Box::new(request_commands::web_os_services::SendEnterKey),
     ];
 
     for (command, request) in commands.iter().zip(expected_requests) {
@@ -56,7 +62,6 @@ fn no_payload_commands() {
 
 #[test]
 fn insert_text() {
-
     let expected_requests = vec![
         CommandRequest {
             r#type: REQUEST_TYPE.to_string(),
@@ -91,9 +96,33 @@ fn insert_text() {
         }),
     ];
 
-   
     for (command, request) in commands.iter().zip(expected_requests) {
         assert_command_request(command.to_command_request(), request);
     }
+}
 
+#[test]
+fn delete_characters() {
+    let expected_requests = vec![
+        CommandRequest {
+            r#type: REQUEST_TYPE.to_string(),
+            uri: String::from("ssap://com.webos.service.ime/deleteCharacters"),
+            payload: Some(json!({"count":5})),
+        },
+        CommandRequest {
+            r#type: REQUEST_TYPE.to_string(),
+            uri: String::from("ssap://com.webos.service.ime/deleteCharacters"),
+            payload: Some(json!({"count":2})),
+        },
+    ];
+
+    let commands: Vec<Box<dyn LGCommandRequest>> = vec![
+        Box::new(request_commands::web_os_services::DeleteCharacters { number_of_chars: 5 }),
+        Box::new(request_commands::web_os_services::DeleteCharacters { number_of_chars: 2 }),
+    ];
+
+
+    for (command, request) in commands.iter().zip(expected_requests) {
+        assert_command_request(command.to_command_request(), request);
+    }
 }

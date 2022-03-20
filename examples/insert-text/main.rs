@@ -1,5 +1,8 @@
+use std::thread::sleep;
+use std::time::Duration;
+
 use lg_webos_client::client::{WebOsClient, WebOsClientConfig};
-use lg_webos_client::lg_command::request_commands;
+use lg_webos_client::lg_command::{request_commands, LGCommandRequest};
 
 #[tokio::main]
 async fn main() {
@@ -10,20 +13,37 @@ async fn main() {
     */
     let config = WebOsClientConfig::new(
         "ws://lgwebostv.local:3000/".to_string(),
-        Some("911232e4ea63476203fde58db0a0e793".to_string()),// my Key
+        Some("023795a2c038fbce7ff4a97d8b362441".to_string()), // my Key
     );
     let client = WebOsClient::connect(config).await.unwrap();
     println!(
         "The key for next time you build WebOsClientConfig: {:?}",
         client.key.clone()
     );
-    let command = Box::new(request_commands::web_os_services::InsertText {
-        text: "test".to_string(),
-        replace: false,
-    });
-    let resp = client.send_command_to_tv(command).await;
-    println!(
-        "Got response {:#?}",
-        resp.expect("Error on send  send text")
-    );
+    let text = String::from("test");
+
+    let request_commands: Vec<Box<dyn LGCommandRequest>> = vec![
+        Box::new(request_commands::web_os_services::InsertText {
+            text: text.clone(),
+            replace: false,
+        }),
+        Box::new(request_commands::web_os_services::InsertText {
+            text: text.clone(),
+            replace: false,
+        }),
+        Box::new(request_commands::web_os_services::DeleteCharacters {
+            number_of_chars: text.len(),
+        }),
+        Box::new(request_commands::web_os_services::InsertText {
+            text: String::from(" Success"),
+            replace: false
+        }),
+        Box::new(request_commands::web_os_services::SendEnterKey),
+    ];
+
+    for command in request_commands {
+        let resp = client.send_command_to_tv(command).await;
+        println!("Got response {:#?}", resp.expect("Error on send request"));
+        sleep(Duration::new(2, 0));
+    }
 }
