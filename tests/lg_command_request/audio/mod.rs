@@ -1,5 +1,5 @@
 use crate::lg_command_request::assert_command_request;
-use lg_webos_client::lg_command::{commands, REQUEST_TYPE};
+use lg_webos_client::lg_command::{request_commands, REQUEST_TYPE};
 use lg_webos_client::lg_command::{CommandRequest, LGCommandRequest};
 use serde_json::json;
 
@@ -12,7 +12,7 @@ fn test_set_mute() {
             payload: Some(json!({ "mute": mute })),
         };
 
-        let set_mute = commands::audio::SetMute { mute };
+        let set_mute = request_commands::audio::SetMute { mute };
 
         let result = set_mute.to_command_request();
         assert_command_request(result, expected);
@@ -28,7 +28,7 @@ fn test_set_volume() {
             payload: Some(json!({ "volume": volume })),
         };
 
-        let result = commands::audio::SetVolume { volume }.to_command_request();
+        let result = request_commands::audio::SetVolume { volume }.to_command_request();
 
         assert_command_request(result, expected);
     }
@@ -42,7 +42,7 @@ fn test_get_audio_status() {
         payload: None,
     };
 
-    let result = commands::audio::AudioStatus.to_command_request();
+    let result = request_commands::audio::AudioStatus.to_command_request();
 
     assert_command_request(result, expected);
 }
@@ -55,7 +55,7 @@ fn test_get_volume() {
         payload: None,
     };
 
-    let result = commands::audio::GetVolume.to_command_request();
+    let result = request_commands::audio::GetVolume.to_command_request();
 
     assert_command_request(result, expected);
 }

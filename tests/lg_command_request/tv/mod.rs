@@ -1,5 +1,5 @@
 use crate::lg_command_request::assert_command_request;
-use lg_webos_client::lg_command::commands;
+use lg_webos_client::lg_command::request_commands;
 use lg_webos_client::lg_command::REQUEST_TYPE;
 use lg_webos_client::lg_command::{CommandRequest, LGCommandRequest};
 use serde_json::json;
@@ -13,7 +13,7 @@ fn test_set_open_channel() {
         payload: Some(json!({ "channelId": open_channel_id.clone() })),
     };
 
-    let result = commands::tv::SetOpenChannel {
+    let result = request_commands::tv::SetOpenChannel {
         channel_id: open_channel_id,
     }
     .to_command_request();
@@ -32,7 +32,7 @@ fn test_switch_input() {
             payload: Some(json!({ "inputId":input_id.clone() })),
         };
 
-        let result = commands::tv::SwitchInput { input_id }.to_command_request();
+        let result = request_commands::tv::SwitchInput { input_id }.to_command_request();
 
         assert_command_request(result, expected);
     }
@@ -48,7 +48,8 @@ fn test_get_open_channel_information() {
             payload: Some(json!({ "channelId": channel_id.clone() })),
         };
 
-        let result = commands::tv::GetOpenChannelInformation { channel_id }.to_command_request();
+        let result =
+            request_commands::tv::GetOpenChannelInformation { channel_id }.to_command_request();
 
         assert_command_request(result, expected);
     }
@@ -85,11 +86,11 @@ fn no_payload_commands() {
     ];
 
     let commands: Vec<Box<dyn LGCommandRequest>> = vec![
-        Box::new(commands::tv::GetChannelList),
-        Box::new(commands::tv::GetCurrentChannelInformation),
-        Box::new(commands::tv::ChannelUp),
-        Box::new(commands::tv::ChannelDown),
-        Box::new(commands::tv::GetExternalInputList),
+        Box::new(request_commands::tv::GetChannelList),
+        Box::new(request_commands::tv::GetCurrentChannelInformation),
+        Box::new(request_commands::tv::ChannelUp),
+        Box::new(request_commands::tv::ChannelDown),
+        Box::new(request_commands::tv::GetExternalInputList),
     ];
 
     for (command, expected_request) in commands.iter().zip(expected_requests) {

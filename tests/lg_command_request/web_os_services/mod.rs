@@ -1,7 +1,7 @@
 use crate::lg_command_request::assert_command_request;
 use lg_webos_client::lg_command::{CommandRequest, LGCommandRequest};
 
-use lg_webos_client::lg_command::{commands, REQUEST_TYPE};
+use lg_webos_client::lg_command::{request_commands, REQUEST_TYPE};
 
 #[test]
 fn test_set_display_3d() {
@@ -18,9 +18,9 @@ fn test_set_display_3d() {
         },
     ];
 
-    let commands: Vec<commands::web_os_services::SetDisplay3D> = vec![true, false]
+    let commands: Vec<request_commands::web_os_services::SetDisplay3D> = vec![true, false]
         .iter()
-        .map(|&turn_3d| commands::web_os_services::SetDisplay3D { turn_3d })
+        .map(|&turn_3d| request_commands::web_os_services::SetDisplay3D { turn_3d })
         .collect();
 
     for (command, request) in commands.iter().zip(expected_requests) {
@@ -44,8 +44,8 @@ fn no_payload_commands() {
     ];
 
     let commands: Vec<Box<dyn LGCommandRequest>> = vec![
-        Box::new(commands::web_os_services::GetCurrentServicesInformationList),
-        Box::new(commands::web_os_services::GetPointerInputSocketUri),
+        Box::new(request_commands::web_os_services::GetCurrentServicesInformationList),
+        Box::new(request_commands::web_os_services::GetPointerInputSocketUri),
     ];
 
     for (command, request) in commands.iter().zip(expected_requests) {

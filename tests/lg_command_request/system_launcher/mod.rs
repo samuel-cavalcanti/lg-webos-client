@@ -1,5 +1,5 @@
 use crate::lg_command_request::assert_command_request;
-use lg_webos_client::lg_command::{commands, REQUEST_TYPE};
+use lg_webos_client::lg_command::{request_commands, REQUEST_TYPE};
 use lg_webos_client::lg_command::{CommandRequest, LGCommandRequest};
 use serde_json::json;
 
@@ -17,7 +17,7 @@ fn test_open_browser() {
             payload: Some(json!({ "target": url.clone()})),
         };
 
-        let command = commands::system_launcher::OpenBrowser { url };
+        let command = request_commands::system_launcher::OpenBrowser { url };
 
         let result = command.to_command_request();
 
@@ -34,7 +34,7 @@ fn test_launch_app() {
             payload: Some(json!({ "id": app_id, "params": {} })),
         };
 
-        let result = commands::system_launcher::LaunchApp {
+        let result = request_commands::system_launcher::LaunchApp {
             app_id: app_id.to_string(),
             parameters: json!({}),
         }

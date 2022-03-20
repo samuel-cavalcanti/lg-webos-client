@@ -1,7 +1,7 @@
 use crate::lg_command_request::assert_command_request;
 use lg_webos_client::lg_command::{CommandRequest, LGCommandRequest};
 
-use lg_webos_client::lg_command::{commands, REQUEST_TYPE};
+use lg_webos_client::lg_command::{request_commands, REQUEST_TYPE};
 
 #[test]
 fn test_turn_off() {
@@ -11,7 +11,7 @@ fn test_turn_off() {
         payload: None,
     };
 
-    let result = commands::system::TurnOff.to_command_request();
+    let result = request_commands::system::TurnOff.to_command_request();
 
     assert_command_request(result, expected);
 }
