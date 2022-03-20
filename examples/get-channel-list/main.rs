@@ -10,7 +10,7 @@ async fn main() {
         "The key for next time you build WebOsClientConfig: {:?}",
         client.key.clone()
     );
-    let command = Box::new(lg_webos_client::lg_command::commands::tv::GetChannelList);
+    let command = Box::new(lg_webos_client::lg_command::request_commands::tv::GetChannelList);
     let resp = client.send_command_to_tv(command).await;
     println!(
         "Got response {:#?}",
