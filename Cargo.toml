@@ -1,11 +1,11 @@
 [package]
 name = "lg-webos-client"
 version = "0.4.0"
-authors = ["kasper.ziemianek@gmail.com", "gavinpease@gmail.com"]
+authors = ["samuelcavalcanti111@gmail.com"]
 edition = "2021"
 description = "LG webOS client"
 readme = "README.md"
-repository = "https://github.com/kziemianek/lg-webos-client"
+repository = "https://github.com/samuel-cavalcanti/lg-webos-client"
 license-file = "LICENSE"
 keywords = ["lg", "webos", "bindings"]
 
