@@ -52,7 +52,7 @@ impl WebOsClient {
         Ok(promise.await)
     }
 
-    pub async fn send_input_command_to_tv(
+    pub async fn send_pointer_input_command_to_tv(
         &self,
         cmd: Box<dyn PointerInputCommand>,
     ) -> Result<(), String> {
