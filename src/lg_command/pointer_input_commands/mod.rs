@@ -3,5 +3,6 @@ pub trait PointerInputCommand {
 }
 
 mod button;
-
+mod pointer;
 pub use button::Button;
+pub use pointer::Pointer;
