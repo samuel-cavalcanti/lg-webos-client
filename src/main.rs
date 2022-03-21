@@ -51,7 +51,7 @@ async fn main() {
         Box::new(request_commands::web_os_services::GetPointerInputSocketUri),
     ];
 
-    let input_commads: Vec<Box<dyn PointerInputCommand>> = vec![
+    let input_commands: Vec<Box<dyn PointerInputCommand>> = vec![
         Box::new(pointer_input_commands::Button::HOME),
         Box::new(pointer_input_commands::Button::LEFT),
         Box::new(pointer_input_commands::Button::RIGHT),
@@ -79,7 +79,7 @@ async fn main() {
         sleep(Duration::new(1, 0));
     }
 
-    for command in input_commads {
+    for command in input_commands {
         let result = client.send_pointer_input_command_to_tv(command).await;
         if let Err(e) = result {
             error!("Error on send input command {}", e);
