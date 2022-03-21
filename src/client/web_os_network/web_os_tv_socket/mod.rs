@@ -5,9 +5,9 @@ mod error_action;
 pub mod websocket_receive;
 pub mod websocket_send;
 
-mod tv_send_to_websocket_stream;
 mod receive_trait;
 mod send_trait;
+mod tv_send_to_websocket_stream;
 
 pub use error_action::WebSocketErrorAction;
 pub use receive_trait::WebOsSocketTvReceive;

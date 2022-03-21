@@ -36,7 +36,7 @@ async fn main() {
         }),
         Box::new(request_commands::web_os_services::InsertText {
             text: String::from(" Success"),
-            replace: false
+            replace: false,
         }),
         Box::new(request_commands::web_os_services::SendEnterKey),
     ];

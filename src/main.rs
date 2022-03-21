@@ -59,8 +59,10 @@ async fn main() {
         Box::new(pointer_input_commands::Button::DOWN),
         Box::new(pointer_input_commands::Button::BACK),
         Box::new(pointer_input_commands::Button::ENTER),
-        Box::new(pointer_input_commands::Pointer::move_it(500.0, 0.0,false)),
-        Box::new(pointer_input_commands::Pointer::move_it(500.0, 500.0,false)),
+        Box::new(pointer_input_commands::Pointer::move_it(500.0, 0.0, false)),
+        Box::new(pointer_input_commands::Pointer::move_it(
+            500.0, 500.0, false,
+        )),
         Box::new(pointer_input_commands::Pointer::scroll(0.0, 200.0)),
         Box::new(pointer_input_commands::Pointer::click()),
     ];

@@ -6,9 +6,11 @@ use serde_json::{json, Value};
 
 use crate::client::web_os_client_config::WebOsClientConfig;
 
-use crate::client::web_os_network::{WebOsMultiThreadSocketConnection, InputPointerSocketConnection};
+use crate::client::web_os_network::{
+    InputPointerSocketConnection, WebOsMultiThreadSocketConnection,
+};
 use crate::lg_command::pointer_input_commands::PointerInputCommand;
-use crate::lg_command::{ LGCommandRequest};
+use crate::lg_command::LGCommandRequest;
 
 use super::web_os_network::{WebOsSocketTvSend, WebOsTvRequestCommunication, WebSocketErrorAction};
 
@@ -24,15 +26,15 @@ impl WebOsClient {
         let mut tv_connection = WebOsMultiThreadSocketConnection::connect_to_tv(config).await?;
         // let pointer_input_connection = WebOsPointerInputConnection::connect(&tv_connection.sender).await?;
         debug!("connected with TV");
-        let pointer_input_sender = InputPointerSocketConnection::try_to_connect(&mut tv_connection.request_sender).await?;
+        let pointer_input_sender =
+            InputPointerSocketConnection::try_to_connect(&mut tv_connection.request_sender).await?;
 
-        let  client = WebOsClient {
+        let client = WebOsClient {
             key: Some(tv_connection.key),
             request_sender: RefCell::new(tv_connection.request_sender),
-            pointer_input_sender:RefCell::new(pointer_input_sender),
+            pointer_input_sender: RefCell::new(pointer_input_sender),
         };
 
-      
         Ok(client)
     }
 

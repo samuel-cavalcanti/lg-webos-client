@@ -3,7 +3,7 @@ use crate::client::web_os_network::{
 };
 use crate::client::WebSocketErrorAction;
 use async_trait::async_trait;
-use serde_json::{json};
+use serde_json::json;
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 

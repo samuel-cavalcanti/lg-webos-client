@@ -16,21 +16,20 @@ impl Pointer {
         }
     }
 
-    pub fn scroll(dx: f32, dy: f32)->Pointer{
-
+    pub fn scroll(dx: f32, dy: f32) -> Pointer {
         Pointer {
             command: format!("type:scroll\ndx:{dx}\ndy:{dy}\n\n"),
         }
     }
 
-    pub fn click()->Pointer{
+    pub fn click() -> Pointer {
         Pointer {
             command: "type:click\n\n".to_string(),
         }
     }
 }
 
-impl PointerInputCommand for Pointer  {
+impl PointerInputCommand for Pointer {
     fn to_string(&self) -> String {
         self.command.clone()
     }

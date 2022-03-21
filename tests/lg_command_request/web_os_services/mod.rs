@@ -121,7 +121,6 @@ fn delete_characters() {
         Box::new(request_commands::web_os_services::DeleteCharacters { number_of_chars: 2 }),
     ];
 
-
     for (command, request) in commands.iter().zip(expected_requests) {
         assert_command_request(command.to_command_request(), request);
     }
