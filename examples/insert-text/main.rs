@@ -15,7 +15,7 @@ async fn main() {
         "ws://lgwebostv.local:3000/".to_string(),
         Some("023795a2c038fbce7ff4a97d8b362441".to_string()), // my Key
     );
-    let client = WebOsClient::connect(config).await.unwrap();
+    let mut client = WebOsClient::connect(config).await.unwrap();
     println!(
         "The key for next time you build WebOsClientConfig: {:?}",
         client.key.clone()
