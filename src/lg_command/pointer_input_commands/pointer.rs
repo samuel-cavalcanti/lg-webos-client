@@ -30,7 +30,7 @@ impl Pointer {
 }
 
 impl PointerInputCommand for Pointer {
-    fn to_string(&self) -> String {
+    fn to_request_string(&self) -> String {
         self.command.clone()
     }
 }

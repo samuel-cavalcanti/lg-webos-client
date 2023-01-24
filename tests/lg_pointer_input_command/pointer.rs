@@ -9,20 +9,20 @@ fn test_pointer() {
     let scroll_y = Pointer::scroll(dx, dy);
     let click = Pointer::click();
 
-    assert_eq!("type:click\n\n".to_string(), click.to_string());
+    assert_eq!("type:click\n\n".to_string(), click.to_request_string());
 
     assert_eq!(
-        scroll_y.to_string(),
+        scroll_y.to_request_string(),
         format!("type:scroll\ndx:{dx}\ndy:{dy}\n\n")
     );
 
     assert_eq!(
-        move_it_drag_false.to_string(),
+        move_it_drag_false.to_request_string(),
         format!("type:move\ndx:{dx}\ndy:{dy}\ndown:0\n\n")
     );
 
     assert_eq!(
-        move_it_drag_true.to_string(),
+        move_it_drag_true.to_request_string(),
         format!("type:move\ndx:{dx}\ndy:{dy}\ndown:1\n\n")
     );
 }

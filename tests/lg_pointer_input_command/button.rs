@@ -20,6 +20,6 @@ fn test_buttons() {
         .to_vec();
 
     for (command, expected) in input_commands.iter().zip(expected_strings) {
-        assert_eq!(command.to_string(), expected);
+        assert_eq!(command.to_request_string(), expected);
     }
 }

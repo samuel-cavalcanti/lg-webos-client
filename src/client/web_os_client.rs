@@ -52,15 +52,12 @@ impl WebOsClient {
         Ok(promise.await)
     }
 
-    pub async fn send_pointer_input_command_to_tv(
+    pub async fn send_pointer_input_command_to_tv<R: PointerInputCommand>(
         &mut self,
-        cmd: Box<dyn PointerInputCommand>,
-    ) -> Result<(), String> {
-        match self.pointer_input_sender.send_text(cmd.to_string()).await {
-            Ok(ok) => Ok(ok),
-            Err(e) => {
-                Err(format!("Error: {:?}, maybe you need to restart the connection", e).to_string())
-            }
-        }
+        cmd: R,
+    ) -> Result<(), WebSocketErrorAction> {
+        self.pointer_input_sender
+            .send_text(cmd.to_request_string())
+            .await
     }
 }

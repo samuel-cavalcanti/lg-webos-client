@@ -11,7 +11,7 @@ pub enum Button {
 }
 
 impl PointerInputCommand for Button {
-    fn to_string(&self) -> String {
+    fn to_request_string(&self) -> String {
         let name = match self {
             Button::ENTER => "ENTER",
             Button::HOME => "HOME",
@@ -22,6 +22,6 @@ impl PointerInputCommand for Button {
             Button::BACK => "BACK",
         };
 
-        return format!("type:button\nname:{name}\n\n");
+        format!("type:button\nname:{name}\n\n")
     }
 }
