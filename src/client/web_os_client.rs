@@ -1,5 +1,3 @@
-use std::cell::RefCell;
-
 use log::debug;
 
 use serde_json::{json, Value};
@@ -33,16 +31,16 @@ impl WebOsClient {
             key: Some(tv_connection.key),
             request_sender: tv_connection.request_sender,
 
-            pointer_input_sender: pointer_input_sender,
+            pointer_input_sender,
         };
 
         Ok(client)
     }
 
     /// Sends single lg_command and waits for response
-    pub async fn send_command_to_tv(
+    pub async fn send_command_to_tv<R: LGCommandRequest>(
         &mut self,
-        cmd: Box<dyn LGCommandRequest>,
+        cmd: R,
     ) -> Result<Value, WebSocketErrorAction> {
         // let mut sender = &mut self.tv_sender;
         let request = cmd.to_command_request();
