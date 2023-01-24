@@ -19,7 +19,8 @@ impl WebOsSocketTvReceive for SplitStream<WebSocketStream<MaybeTlsStream<TcpStre
                         return match serde_json::from_str::<Value>(&text_message) {
                             Ok(json) => Ok(json),
                             Err(e) => {
-                                error!("Fail to convert to json {}", e.to_string());
+                                error!("Fail to convert to json, message: {text_message} ::: Error: {e:?}");
+
                                 Err(WebSocketErrorAction::Continue)
                             }
                         }
