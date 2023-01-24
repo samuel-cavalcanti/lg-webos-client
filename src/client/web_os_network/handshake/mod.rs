@@ -1,6 +1,6 @@
-mod handshake;
+mod handshake_impl;
 
-pub use handshake::HandShake;
+pub use handshake_impl::HandShake;
 
 #[cfg(test)]
 mod test_handshake;

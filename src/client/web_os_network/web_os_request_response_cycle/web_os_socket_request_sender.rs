@@ -68,9 +68,7 @@ impl WebOsTvRequestCommunication for WebOsTVRequestSender {
 
         match serde_json::to_string(&json) {
             Ok(json_string) => {
-                if let Err(e) = self.write.send_text(json_string).await {
-                    return Err(e);
-                }
+                self.write.send_text(json_string).await?;
             }
             Err(e) => {
                 error!("Unable to convert to string {:?}", e);

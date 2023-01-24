@@ -24,14 +24,9 @@ impl HandShake {
            otherwise key is None.
         */
         let handshake_request = HandShake::get_handshake_request(key);
-
-        if let Err(_) = sender
-            .send_text(
-                serde_json::to_string(&handshake_request)
-                    .expect("Unable to Convert handshake_request to String"),
-            )
-            .await
-        {
+        let handshake_request = serde_json::to_string(&handshake_request)
+            .expect("Unable to Convert handshake_request to String");
+        if sender.send_text(handshake_request).await.is_err() {
             return Err(ERROR_MESSAGE.to_string());
         }
 
@@ -46,24 +41,24 @@ impl HandShake {
         let second_package = HandShake::try_to_receive(receiver).await?;
         debug!("Second JSON {}", second_package);
 
-        return HandShake::try_to_parse_response_key(second_package);
+        HandShake::try_to_parse_response_key(second_package)
     }
 
     fn is_register_response(json_type: Option<&str>) -> Result<bool, String> {
-        return match json_type {
+        match json_type {
             Some(response_type) => {
-                if response_type == "registered" {
-                    return Ok(true);
-                } else if response_type == "error" {
+                if response_type == "registered" || response_type == "error" {
                     /*
-                       when the user not authorize the app, The Tv returns "type":"error"
+                       when the user not authorize the app,
+                       The Tv register response returns "type":"error"
                     */
-                    return Ok(true);
+                    Ok(true)
+                } else {
+                    Ok(false)
                 }
-                Ok(false)
             }
             None => Err("Unable to Parse id".to_string()),
-        };
+        }
     }
 
     async fn try_to_receive<R: WebOsSocketTvReceive>(receiver: &mut R) -> Result<Value, String> {
@@ -80,10 +75,10 @@ impl HandShake {
             .and_then(|k| k.as_str())
             .map(Into::into);
 
-        return match key {
+        match key {
             Some(key) => Ok(key),
             None => Err(ERROR_MESSAGE.to_string()),
-        };
+        }
     }
 
     fn get_handshake_request(key: Option<String>) -> Value {
@@ -97,7 +92,7 @@ impl HandShake {
             );
         }
 
-        return handshake;
+        handshake
     }
 
     fn load_handshake_request_from_file() -> serde_json::Value {

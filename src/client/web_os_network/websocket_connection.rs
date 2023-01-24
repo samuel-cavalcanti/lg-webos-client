@@ -8,7 +8,7 @@ impl WebSocketConnection {
     fn try_to_parse_url(address: &String) -> Result<Url, String> {
         match url::Url::parse(address) {
             Ok(url) => Ok(url),
-            Err(_) => Err(format!("Could not parse given address {}", address).to_string()),
+            Err(_) => Err(format!("Could not parse given address {address}")),
         }
     }
 
@@ -19,7 +19,7 @@ impl WebSocketConnection {
 
         match connect_async(&url).await {
             Ok((ws_stream, _)) => Ok(ws_stream),
-            Err(_) => Err(format!("Unable to Connect to {:?}", url).to_string()),
+            Err(_) => Err(format!("Unable to Connect to {url:?}")),
         }
     }
 }

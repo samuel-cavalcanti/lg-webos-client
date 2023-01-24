@@ -1,6 +1,6 @@
 use async_trait::async_trait;
 
-use crate::client::web_os_network::handshake::handshake::HandShake;
+use crate::client::web_os_network::handshake::handshake_impl::HandShake;
 use crate::client::web_os_network::{WebOsSocketTvReceive, WebOsSocketTvSend};
 use crate::client::WebSocketErrorAction;
 use serde_json::Value;

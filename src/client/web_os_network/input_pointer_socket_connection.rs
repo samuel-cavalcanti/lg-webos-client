@@ -22,9 +22,9 @@ impl InputPointerSocketConnection {
 
                 Ok(Box::new(sender))
             }
-            Err(e) => {
-                Err(format!("Must be possible to get InputSocketUri, error: {:?}", e).to_string())
-            }
+            Err(e) => Err(format!(
+                "Must be possible to get InputSocketUri, error: {e:?}"
+            )),
         }
     }
 }
