@@ -2,7 +2,7 @@ use tokio_tungstenite::tungstenite;
 
 use log::error;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum WebSocketErrorAction {
     /*
         Some Networks erros can be ignored, so I use ResponseErrosAction::Continue,

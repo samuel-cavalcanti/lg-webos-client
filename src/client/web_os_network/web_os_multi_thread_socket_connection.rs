@@ -19,7 +19,9 @@ use super::handshake::HandShake;
 pub struct WebOsMultiThreadSocketConnection;
 
 impl WebOsMultiThreadSocketConnection {
-    pub async fn connect_to_tv(config: WebOsClientConfig) -> Result<Connection, String> {
+    pub async fn connect_to_tv(
+        config: WebOsClientConfig,
+    ) -> Result<Connection, WebSocketErrorAction> {
         let ws_stream = WebSocketConnection::try_to_connect(&config.address).await?;
 
         let (mut sender, mut web_socket_receive) = ws_stream.split();

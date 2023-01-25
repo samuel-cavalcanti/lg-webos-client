@@ -20,7 +20,7 @@ pub struct WebOsClient {
 }
 
 impl WebOsClient {
-    pub async fn connect(config: WebOsClientConfig) -> Result<WebOsClient, String> {
+    pub async fn connect(config: WebOsClientConfig) -> Result<WebOsClient, WebSocketErrorAction> {
         let mut tv_connection = WebOsMultiThreadSocketConnection::connect_to_tv(config).await?;
         // let pointer_input_connection = WebOsPointerInputConnection::connect(&tv_connection.sender).await?;
         debug!("connected with TV");

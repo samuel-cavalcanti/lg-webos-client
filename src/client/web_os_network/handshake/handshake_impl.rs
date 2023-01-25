@@ -1,5 +1,8 @@
-use crate::client::web_os_network::{WebOsSocketTvReceive, WebOsSocketTvSend};
-use log::debug;
+use crate::client::{
+    web_os_network::{WebOsSocketTvReceive, WebOsSocketTvSend},
+    WebSocketErrorAction,
+};
+use log::{debug, error};
 use serde_json::Value;
 
 pub struct HandShake;
@@ -16,7 +19,7 @@ impl HandShake {
         sender: &mut S,
         receiver: &mut R,
         key: Option<String>,
-    ) -> Result<String, String> {
+    ) -> Result<String, WebSocketErrorAction> {
         debug!("sending handshake");
         /*
            when you not have any authentication key, the serve sends 2 responses.
@@ -27,10 +30,11 @@ impl HandShake {
         let handshake_request = serde_json::to_string(&handshake_request)
             .expect("Unable to Convert handshake_request to String");
         if sender.send_text(handshake_request).await.is_err() {
-            return Err(ERROR_MESSAGE.to_string());
+            error!("{ERROR_MESSAGE}");
+            return Err(WebSocketErrorAction::Fatal);
         }
 
-        let first_package = HandShake::try_to_receive(receiver).await?;
+        let first_package = receiver.receive().await?; //HandShake::try_to_receive(receiver).await?;
         debug!("First JSON {}", first_package);
         let is_register_response = HandShake::is_register_response(first_package["type"].as_str())?;
 
@@ -38,13 +42,13 @@ impl HandShake {
             return HandShake::try_to_parse_response_key(first_package);
         }
 
-        let second_package = HandShake::try_to_receive(receiver).await?;
+        let second_package = receiver.receive().await?;
         debug!("Second JSON {}", second_package);
 
         HandShake::try_to_parse_response_key(second_package)
     }
 
-    fn is_register_response(json_type: Option<&str>) -> Result<bool, String> {
+    fn is_register_response(json_type: Option<&str>) -> Result<bool, WebSocketErrorAction> {
         match json_type {
             Some(response_type) => {
                 if response_type == "registered" || response_type == "error" {
@@ -57,18 +61,11 @@ impl HandShake {
                     Ok(false)
                 }
             }
-            None => Err("Unable to Parse id".to_string()),
+            None => Err(WebSocketErrorAction::Fatal),
         }
     }
 
-    async fn try_to_receive<R: WebOsSocketTvReceive>(receiver: &mut R) -> Result<Value, String> {
-        match receiver.receive().await {
-            Ok(json) => Ok(json),
-            Err(_) => Err(ERROR_MESSAGE.to_string()),
-        }
-    }
-
-    fn try_to_parse_response_key(json: Value) -> Result<String, String> {
+    fn try_to_parse_response_key(json: Value) -> Result<String, WebSocketErrorAction> {
         let key = json
             .get("payload")
             .and_then(|p| p.get("client-key"))
@@ -77,7 +74,7 @@ impl HandShake {
 
         match key {
             Some(key) => Ok(key),
-            None => Err(ERROR_MESSAGE.to_string()),
+            None => Err(WebSocketErrorAction::Fatal),
         }
     }
 

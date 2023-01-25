@@ -92,10 +92,7 @@ async fn test_success_new_client() {
     };
     let key = HandShake::do_the_handshake(&mut sender, &mut receiver, Some(key.unwrap())).await;
 
-    assert_eq!(
-        key.clone().unwrap(),
-        "6f276548085335decbfd5f5a00689c71".to_string()
-    );
+    assert_eq!(key.unwrap(), "6f276548085335decbfd5f5a00689c71".to_string());
     assert_eq!(receiver.number_of_responses, 1);
 }
 
