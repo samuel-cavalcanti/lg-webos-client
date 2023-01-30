@@ -6,13 +6,13 @@ fn test_buttons() {
         After testing in TV the correct payload what the client must send. This test is was created
     */
     let input_commands: Vec<Box<dyn PointerInputCommand + Send>> = vec![
-        Box::new(pointer_input_commands::Button::HOME),
-        Box::new(pointer_input_commands::Button::LEFT),
-        Box::new(pointer_input_commands::Button::RIGHT),
-        Box::new(pointer_input_commands::Button::UP),
-        Box::new(pointer_input_commands::Button::DOWN),
-        Box::new(pointer_input_commands::Button::BACK),
-        Box::new(pointer_input_commands::Button::ENTER),
+        Box::new(pointer_input_commands::ButtonKey::HOME),
+        Box::new(pointer_input_commands::ButtonKey::LEFT),
+        Box::new(pointer_input_commands::ButtonKey::RIGHT),
+        Box::new(pointer_input_commands::ButtonKey::UP),
+        Box::new(pointer_input_commands::ButtonKey::DOWN),
+        Box::new(pointer_input_commands::ButtonKey::BACK),
+        Box::new(pointer_input_commands::ButtonKey::ENTER),
     ];
 
     let expected_strings = ["HOME", "LEFT", "RIGHT", "UP", "DOWN", "BACK", "ENTER"]

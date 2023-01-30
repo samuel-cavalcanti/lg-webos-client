@@ -1,4 +1,4 @@
-pub trait PointerInputCommand {
+pub trait PointerInputCommand: Send {
     fn to_request_string(&self) -> String;
 }
 
@@ -7,7 +7,7 @@ impl<T: PointerInputCommand + ?Sized> PointerInputCommand for Box<T> {
         (**self).to_request_string()
     }
 }
-mod button;
+mod button_key;
 mod pointer;
-pub use button::Button;
+pub use button_key::ButtonKey;
 pub use pointer::Pointer;
