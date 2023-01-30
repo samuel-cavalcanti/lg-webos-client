@@ -1,4 +1,4 @@
-use lg_webos_client::client::{WebOsClient, WebOsClientConfig};
+use lg_webos_client::client::{SendLgCommandRequest, WebOsClient, WebOsClientConfig};
 
 #[tokio::main]
 async fn main() {
@@ -11,7 +11,7 @@ async fn main() {
         client.key.clone()
     );
     let command = Box::new(lg_webos_client::lg_command::request_commands::tv::GetChannelList);
-    let resp = client.send_command_to_tv(command).await;
+    let resp = client.send_lg_command_to_tv(command).await;
     println!(
         "Got response {:#?}",
         resp.expect("Error on send  get channel list")

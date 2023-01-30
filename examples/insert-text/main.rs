@@ -1,7 +1,7 @@
 use std::thread::sleep;
 use std::time::Duration;
 
-use lg_webos_client::client::{WebOsClient, WebOsClientConfig};
+use lg_webos_client::client::{SendLgCommandRequest, WebOsClient, WebOsClientConfig};
 use lg_webos_client::lg_command::{request_commands, LGCommandRequest};
 
 #[tokio::main]
@@ -42,7 +42,7 @@ async fn main() {
     ];
 
     for command in request_commands {
-        let resp = client.send_command_to_tv(command).await;
+        let resp = client.send_lg_command_to_tv(command).await;
         println!("Got response {:#?}", resp.expect("Error on send request"));
         sleep(Duration::new(2, 0));
     }

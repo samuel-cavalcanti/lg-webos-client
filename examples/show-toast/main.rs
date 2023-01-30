@@ -1,5 +1,5 @@
 use lg_webos_client::{
-    client::{WebOsClient, WebOsClientConfig},
+    client::{SendLgCommandRequest, WebOsClient, WebOsClientConfig},
     lg_command::request_commands::system_notifications::CreateToast,
 };
 
@@ -27,7 +27,7 @@ async fn main() -> Result<(), String> {
         debug!("key: {:#?}", client.key.clone());
 
         let result = client
-            .send_command_to_tv(Box::new(CreateToast {
+            .send_lg_command_to_tv(Box::new(CreateToast {
                 message: "HI".to_string(),
             }))
             .await;
