@@ -59,3 +59,28 @@ fn test_get_volume() {
 
     assert_command_request(result, expected);
 }
+
+#[test]
+fn test_volume_up() {
+    let expected = CommandRequest {
+        r#type: REQUEST_TYPE.to_string(),
+        uri: String::from("ssap://audio/volumeUp"),
+        payload: None,
+    };
+
+    let result = request_commands::audio::VolumeUP.to_command_request();
+
+    assert_command_request(result, expected);
+}
+#[test]
+fn test_volume_down() {
+    let expected = CommandRequest {
+        r#type: REQUEST_TYPE.to_string(),
+        uri: String::from("ssap://audio/volumeDown"),
+        payload: None,
+    };
+
+    let result = request_commands::audio::VolumeDown.to_command_request();
+
+    assert_command_request(result, expected);
+}
