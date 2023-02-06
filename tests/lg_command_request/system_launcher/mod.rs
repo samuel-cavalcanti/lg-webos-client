@@ -1,4 +1,5 @@
 use crate::lg_command_request::assert_command_request;
+use lg_webos_client::lg_command::request_commands::system_launcher;
 use lg_webos_client::lg_command::{request_commands, REQUEST_TYPE};
 use lg_webos_client::lg_command::{CommandRequest, LGCommandRequest};
 use serde_json::json;
@@ -27,19 +28,20 @@ fn test_open_browser() {
 
 #[test]
 fn test_launch_app() {
-    for app_id in ["netflix", "amazon", "youtube"] {
-        let expected = CommandRequest {
-            r#type: REQUEST_TYPE.to_string(),
-            uri: String::from("ssap://system.launcher/launch"),
-            payload: Some(json!({ "id": app_id, "params": {} })),
-        };
+    let apps = [
+        system_launcher::LaunchApp::netflix(),
+        system_launcher::LaunchApp::amazon_prime_video(),
+        system_launcher::LaunchApp::youtube(),
+    ];
 
-        let result = request_commands::system_launcher::LaunchApp {
-            app_id: app_id.to_string(),
-            parameters: json!({}),
-        }
-        .to_command_request();
+    let app_id = ["netflix", "amazon", "youtube.leanback.v4"].map(|id| CommandRequest {
+        r#type: REQUEST_TYPE.to_string(),
+        uri: String::from("ssap://system.launcher/launch"),
+        payload: Some(json!({ "id": id, "name": serde_json::Value::Null,  "params": {} })),
+    });
 
-        assert_command_request(result, expected);
+    for (app, request) in apps.iter().zip(app_id) {
+        let result = app.to_command_request();
+        assert_command_request(result, request);
     }
 }
