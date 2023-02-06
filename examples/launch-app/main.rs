@@ -1,19 +1,5 @@
 use lg_webos_client::client::{SendLgCommandRequest, WebOsClient, WebOsClientConfig};
 use lg_webos_client::lg_command::request_commands::system_launcher;
-use lg_webos_client::lg_command::{CommandRequest, LGCommandRequest, REQUEST_TYPE};
-
-//ssap://com.webos.applicationManager/listApps
-struct ListApps;
-
-impl LGCommandRequest for ListApps {
-    fn to_command_request(&self) -> CommandRequest {
-        CommandRequest {
-            r#type: REQUEST_TYPE.to_string(),
-            uri: String::from("ssap://com.webos.applicationManager/listApps"),
-            payload: None,
-        }
-    }
-}
 
 #[tokio::main]
 async fn main() {
@@ -40,7 +26,7 @@ async fn main() {
         let resp = client.send_lg_command_to_tv(app).await;
         println!(
             "Got response {:#?}",
-            resp.expect("Error on send  get channel list")
+            resp.expect("Error on send  launch app")
         );
     }
 }
