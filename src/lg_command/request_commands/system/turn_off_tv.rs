@@ -1,9 +1,9 @@
 use crate::lg_command::request_commands::{CommandRequest, LGCommandRequest};
 use crate::lg_command::REQUEST_TYPE;
 
-pub struct TurnOff;
+pub struct TurnOffTV;
 
-impl LGCommandRequest for TurnOff {
+impl LGCommandRequest for TurnOffTV {
     fn to_command_request(&self) -> CommandRequest {
         CommandRequest {
             r#type: REQUEST_TYPE.to_string(),
