@@ -45,3 +45,16 @@ fn test_launch_app() {
         assert_command_request(result, request);
     }
 }
+
+#[test]
+fn test_list_app() {
+    let command = system_launcher::ListApps;
+
+    let expected = CommandRequest {
+        r#type: REQUEST_TYPE.to_string(),
+        uri: String::from("ssap://com.webos.applicationManager/listApps"),
+        payload: None,
+    };
+
+    assert_command_request(command.to_command_request(), expected);
+}
