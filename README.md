@@ -10,3 +10,4 @@ Inspired by:
 - [Connect-SDK-Android-Core](https://github.com/ConnectSDK/Connect-SDK-Android-Core)
 - [lgtv2.js](https://github.com/hobbyquaker/lgtv2)
 - [lg-webos-client](https://github.com/kziemianek/lg-webos-client)
+- [homebridge-webos-tv](https://github.com/merdok/homebridge-webos-tv/blob/master/lib/LgTvController.js)
