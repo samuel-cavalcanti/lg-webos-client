@@ -1,5 +1,11 @@
 use lg_webos_client::client::{SendLgCommandRequest, WebOsClient, WebOsClientConfig};
-use lg_webos_client::lg_command::request_commands::system_launcher;
+use lg_webos_client::lg_command::request_commands::system_launcher::{self, ListApps};
+
+#[derive(Debug)]
+struct AppInfo {
+    id: String,
+    name: String,
+}
 
 #[tokio::main]
 async fn main() {
@@ -15,7 +21,20 @@ async fn main() {
         "The key for next time you build WebOsClientConfig: {:?}",
         client.key.clone()
     );
+    let json = client.send_lg_command_to_tv(ListApps).await.unwrap();
 
+    let all_apps = json["payload"]["apps"]
+        .as_array()
+        .unwrap()
+        .into_iter()
+        .map(|app_json| AppInfo {
+            id: app_json["id"].as_str().unwrap().to_string(),
+            name: app_json["title"].as_str().unwrap().to_string(),
+        });
+
+    for app_info in all_apps {
+        println!("{app_info:#?}");
+    }
     let apps = [
         system_launcher::LaunchApp::youtube(),
         system_launcher::LaunchApp::amazon_prime_video(),
