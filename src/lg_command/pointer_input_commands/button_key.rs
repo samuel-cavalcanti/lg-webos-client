@@ -21,6 +21,7 @@ pub enum ButtonKey {
     ENTER,
     DASH,
     GUIDE,
+    QMENU,
 }
 
 impl PointerInputCommand for ButtonKey {
@@ -35,6 +36,7 @@ impl PointerInputCommand for ButtonKey {
             ButtonKey::BACK => "BACK",
             ButtonKey::DASH => "DASH",
             ButtonKey::GUIDE => "GUIDE",
+            ButtonKey::QMENU => "QMENU",
 
             ButtonKey::Num0 => "0",
             ButtonKey::Num1 => "1",
