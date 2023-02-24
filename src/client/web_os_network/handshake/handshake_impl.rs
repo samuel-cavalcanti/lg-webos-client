@@ -1,6 +1,6 @@
 use crate::client::{
     web_os_network::{WebOsSocketTvReceive, WebOsSocketTvSend},
-    WebSocketErrorAction,
+    WebSocketError,
 };
 use log::{debug, error};
 use serde_json::Value;
@@ -19,7 +19,7 @@ impl HandShake {
         sender: &mut S,
         receiver: &mut R,
         key: Option<String>,
-    ) -> Result<String, WebSocketErrorAction> {
+    ) -> Result<String, WebSocketError> {
         debug!("sending handshake");
         /*
            when you not have any authentication key, the serve sends 2 responses.
@@ -31,7 +31,7 @@ impl HandShake {
             .expect("Unable to Convert handshake_request to String");
         if sender.send_text(handshake_request).await.is_err() {
             error!("{ERROR_MESSAGE}");
-            return Err(WebSocketErrorAction::Fatal);
+            return Err(WebSocketError::Fatal);
         }
 
         let first_package = receiver.receive().await?; //HandShake::try_to_receive(receiver).await?;
@@ -48,7 +48,7 @@ impl HandShake {
         HandShake::try_to_parse_response_key(second_package)
     }
 
-    fn is_register_response(json_type: Option<&str>) -> Result<bool, WebSocketErrorAction> {
+    fn is_register_response(json_type: Option<&str>) -> Result<bool, WebSocketError> {
         match json_type {
             Some(response_type) => {
                 if response_type == "registered" || response_type == "error" {
@@ -61,11 +61,11 @@ impl HandShake {
                     Ok(false)
                 }
             }
-            None => Err(WebSocketErrorAction::Fatal),
+            None => Err(WebSocketError::Fatal),
         }
     }
 
-    fn try_to_parse_response_key(json: Value) -> Result<String, WebSocketErrorAction> {
+    fn try_to_parse_response_key(json: Value) -> Result<String, WebSocketError> {
         let key = json
             .get("payload")
             .and_then(|p| p.get("client-key"))
@@ -74,7 +74,7 @@ impl HandShake {
 
         match key {
             Some(key) => Ok(key),
-            None => Err(WebSocketErrorAction::Fatal),
+            None => Err(WebSocketError::Fatal),
         }
     }
 

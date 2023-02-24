@@ -5,7 +5,7 @@ use serde_json::json;
 
 use super::{
     WebOsSocketTvReceive, WebOsSocketTvSend, WebOsTvRequestCommunication, WebSocketConnection,
-    WebSocketErrorAction,
+    WebSocketError,
 };
 
 pub struct InputPointerSocketConnection;
@@ -13,7 +13,7 @@ pub struct InputPointerSocketConnection;
 impl InputPointerSocketConnection {
     pub async fn try_to_connect(
         request_sender: &mut Box<dyn WebOsTvRequestCommunication>,
-    ) -> Result<Box<dyn WebOsSocketTvSend>, WebSocketErrorAction> {
+    ) -> Result<Box<dyn WebOsSocketTvSend>, WebSocketError> {
         let address = InputPointerSocketConnection::get_socket_path(request_sender).await?;
         let sender = WebSocketConnection::try_to_connect(&address).await?;
 
@@ -33,7 +33,7 @@ impl InputPointerSocketConnection {
 
     async fn get_socket_path(
         request_sender: &mut Box<dyn WebOsTvRequestCommunication>,
-    ) -> Result<String, WebSocketErrorAction> {
+    ) -> Result<String, WebSocketError> {
         let request =
             request_commands::web_os_services::GetPointerInputSocketUri.to_command_request();
 
@@ -43,7 +43,7 @@ impl InputPointerSocketConnection {
             Some(text) => text.to_string(),
             None => {
                 error!("Socket path not found in JSON: {json:?}");
-                return Err(WebSocketErrorAction::Fatal);
+                return Err(WebSocketError::Fatal);
             }
         };
 
@@ -52,7 +52,7 @@ impl InputPointerSocketConnection {
 
     async fn listener_loop<R: WebOsSocketTvReceive>(
         receiver: &mut R,
-    ) -> Result<(), WebSocketErrorAction> {
+    ) -> Result<(), WebSocketError> {
         let result = receiver.receive().await;
 
         match result {
@@ -61,11 +61,11 @@ impl InputPointerSocketConnection {
                 Ok(())
             }
             Err(e) => match e {
-                WebSocketErrorAction::Fatal => {
+                WebSocketError::Fatal => {
                     error!("Recived Fatal error on pointer listener loop: {e:?}");
                     Err(e)
                 }
-                WebSocketErrorAction::Continue => {
+                WebSocketError::Continue => {
                     debug!("Recived continue error on pointer listener loop: {e:?}");
                     Ok(())
                 }
@@ -82,7 +82,7 @@ mod tests {
     use serde_json::{json, Value};
 
     use super::*;
-    use super::{WebOsSocketTvReceive, WebOsTvRequestCommunication, WebSocketErrorAction};
+    use super::{WebOsSocketTvReceive, WebOsTvRequestCommunication, WebSocketError};
 
     enum TestCases {
         FatalError,
@@ -97,10 +97,10 @@ mod tests {
 
     #[async_trait]
     impl WebOsSocketTvReceive for MockWebOsSocketTvReceive {
-        async fn receive(&mut self) -> Result<Value, WebSocketErrorAction> {
+        async fn receive(&mut self) -> Result<Value, WebSocketError> {
             match self.case {
-                TestCases::ContinueError => Err(WebSocketErrorAction::Continue),
-                TestCases::FatalError => Err(WebSocketErrorAction::Fatal),
+                TestCases::ContinueError => Err(WebSocketError::Continue),
+                TestCases::FatalError => Err(WebSocketError::Fatal),
                 _ => Ok(json! ({"ok":"200"})),
             }
         }
@@ -124,8 +124,8 @@ mod tests {
 
         if let Err(e) = fatal {
             let is_fatal = match e {
-                WebSocketErrorAction::Continue => false,
-                WebSocketErrorAction::Fatal => true,
+                WebSocketError::Continue => false,
+                WebSocketError::Fatal => true,
             };
 
             assert!(is_fatal);
@@ -147,10 +147,10 @@ mod tests {
         async fn send_json_request(
             &mut self,
             _json: Value,
-        ) -> Result<PinkySwear<Value>, WebSocketErrorAction> {
+        ) -> Result<PinkySwear<Value>, WebSocketError> {
             match self.case {
-                TestCases::FatalError => Err(WebSocketErrorAction::Fatal),
-                TestCases::ContinueError => Err(WebSocketErrorAction::Continue),
+                TestCases::FatalError => Err(WebSocketError::Fatal),
+                TestCases::ContinueError => Err(WebSocketError::Continue),
                 TestCases::CorrectJson => {
                     let json_string = r#"{"id":0,"payload":{"returnValue":true,"socketPath":"ws://lgwebostv.local:3000/resources/eb0c0b658ad42ce05df0bf279a818017c5f11ae9/netinput.pointer.sock"},"type":"response"}"#;
 

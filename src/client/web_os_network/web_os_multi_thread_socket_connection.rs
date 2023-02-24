@@ -11,7 +11,7 @@ use crate::client::web_os_network::web_os_request_response_cycle::{
 use crate::client::web_os_network::WebOsSocketTvReceive;
 
 use crate::client::web_os_network::websocket_connection::WebSocketConnection;
-use crate::client::{WebOsClientConfig, WebSocketErrorAction};
+use crate::client::{WebOsClientConfig, WebSocketError};
 
 use super::connection::Connection;
 use super::handshake::HandShake;
@@ -19,9 +19,7 @@ use super::handshake::HandShake;
 pub struct WebOsMultiThreadSocketConnection;
 
 impl WebOsMultiThreadSocketConnection {
-    pub async fn connect_to_tv(
-        config: WebOsClientConfig,
-    ) -> Result<Connection, WebSocketErrorAction> {
+    pub async fn connect_to_tv(config: WebOsClientConfig) -> Result<Connection, WebSocketError> {
         let ws_stream = WebSocketConnection::try_to_connect(&config.address).await?;
 
         let (mut sender, mut web_socket_receive) = ws_stream.split();
@@ -64,7 +62,7 @@ impl WebOsMultiThreadSocketConnection {
             match web_socket_receive.receive().await {
                 Ok(json) => listener.receive_from_tv(json),
                 Err(e) => {
-                    if let WebSocketErrorAction::Fatal = e {
+                    if let WebSocketError::Fatal = e {
                         debug!("listener has stopped by Fatal error");
                         return;
                     }

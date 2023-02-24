@@ -2,7 +2,7 @@ use async_trait::async_trait;
 
 use crate::client::web_os_network::handshake::handshake_impl::HandShake;
 use crate::client::web_os_network::{WebOsSocketTvReceive, WebOsSocketTvSend};
-use crate::client::WebSocketErrorAction;
+use crate::client::WebSocketError;
 use serde_json::Value;
 
 struct MockNewClientReceive {
@@ -12,7 +12,7 @@ struct MockNewClientReceive {
 }
 
 impl MockNewClientReceive {
-    fn get_json(&self, number_of_responses: u8) -> Result<Value, WebSocketErrorAction> {
+    fn get_json(&self, number_of_responses: u8) -> Result<Value, WebSocketError> {
         let first_json =
             r#"{"id":0,"payload":{"pairingType":"PROMPT","returnValue":true},"type":"response"}"#;
         let register_json = r#"{"id":0,"payload":{"client-key":"6f276548085335decbfd5f5a00689c71"},"type":"registered"}"#;
@@ -27,7 +27,7 @@ impl MockNewClientReceive {
             }
         } else if number_of_responses == 1 {
             if self.only_one_response {
-                Err(WebSocketErrorAction::Fatal)
+                Err(WebSocketError::Fatal)
             } else {
                 if self.client_gonna_refuse {
                     Ok(serde_json::from_str::<Value>(&error_json).unwrap())
@@ -36,14 +36,14 @@ impl MockNewClientReceive {
                 }
             }
         } else {
-            Err(WebSocketErrorAction::Fatal)
+            Err(WebSocketError::Fatal)
         }
     }
 }
 
 #[async_trait]
 impl WebOsSocketTvReceive for MockNewClientReceive {
-    async fn receive(&mut self) -> Result<Value, WebSocketErrorAction> {
+    async fn receive(&mut self) -> Result<Value, WebSocketError> {
         let json = self.get_json(self.number_of_responses);
 
         self.number_of_responses += 1;
@@ -56,7 +56,7 @@ struct MockSend;
 
 #[async_trait]
 impl WebOsSocketTvSend for MockSend {
-    async fn send_text(&mut self, _: String) -> Result<(), WebSocketErrorAction> {
+    async fn send_text(&mut self, _: String) -> Result<(), WebSocketError> {
         Ok(())
     }
 }

@@ -8,7 +8,7 @@ use log::{debug, error};
 use pinky_swear::{Pinky, PinkySwear};
 use serde_json::Value;
 
-use crate::client::{web_os_network::WebOsSocketTvSend, WebSocketErrorAction};
+use crate::client::{web_os_network::WebOsSocketTvSend, WebSocketError};
 
 use super::web_os_tv_request_communication::WebOsTvRequestCommunication;
 
@@ -59,7 +59,7 @@ impl WebOsTvRequestCommunication for WebOsTVRequestSender {
     async fn send_json_request(
         &mut self,
         json: Value,
-    ) -> Result<PinkySwear<Value>, WebSocketErrorAction> {
+    ) -> Result<PinkySwear<Value>, WebSocketError> {
         let command_id = self.get_id();
 
         let mut json = json;
@@ -72,7 +72,7 @@ impl WebOsTvRequestCommunication for WebOsTVRequestSender {
             }
             Err(e) => {
                 error!("Unable to convert to string {:?}", e);
-                return Err(WebSocketErrorAction::Continue);
+                return Err(WebSocketError::Continue);
             }
         }
 

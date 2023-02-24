@@ -11,7 +11,7 @@ use crate::client::web_os_network::{
 use crate::lg_command::pointer_input_commands::PointerInputCommand;
 use crate::lg_command::LGCommandRequest;
 
-use super::web_os_network::{WebOsSocketTvSend, WebOsTvRequestCommunication, WebSocketErrorAction};
+use super::web_os_network::{WebOsSocketTvSend, WebOsTvRequestCommunication, WebSocketError};
 use super::{SendLgCommandRequest, SendPointerCommandRequest};
 
 /// Client for interacting with TV
@@ -22,7 +22,7 @@ pub struct WebOsClient {
 }
 
 impl WebOsClient {
-    pub async fn connect(config: WebOsClientConfig) -> Result<WebOsClient, WebSocketErrorAction> {
+    pub async fn connect(config: WebOsClientConfig) -> Result<WebOsClient, WebSocketError> {
         let tv_connection = WebOsMultiThreadSocketConnection::connect_to_tv(config).await?;
         debug!("connected with TV");
 
@@ -36,7 +36,7 @@ impl WebOsClient {
         Ok(client)
     }
 
-    async fn try_to_connect_pointer_client(&mut self) -> Result<(), WebSocketErrorAction> {
+    async fn try_to_connect_pointer_client(&mut self) -> Result<(), WebSocketError> {
         if self.pointer_input_sender.is_some() {
             return Ok(());
         }
@@ -55,7 +55,7 @@ impl SendLgCommandRequest for WebOsClient {
     async fn send_lg_command_to_tv<R: LGCommandRequest>(
         &mut self,
         cmd: R,
-    ) -> Result<Value, WebSocketErrorAction> {
+    ) -> Result<Value, WebSocketError> {
         // let mut sender = &mut self.tv_sender;
         let request = cmd.to_command_request();
         let promise = self
@@ -72,7 +72,7 @@ impl SendLgCommandRequest for &mut WebOsClient {
     async fn send_lg_command_to_tv<R: LGCommandRequest>(
         &mut self,
         cmd: R,
-    ) -> Result<Value, WebSocketErrorAction> {
+    ) -> Result<Value, WebSocketError> {
         // let mut sender = &mut self.tv_sender;
         let request = cmd.to_command_request();
         let promise = self
@@ -89,13 +89,13 @@ impl SendPointerCommandRequest for WebOsClient {
     async fn send_pointer_input_command_to_tv<R: PointerInputCommand>(
         &mut self,
         cmd: R,
-    ) -> Result<(), WebSocketErrorAction> {
+    ) -> Result<(), WebSocketError> {
         self.try_to_connect_pointer_client().await?;
 
         let text = cmd.to_request_string();
         match self.pointer_input_sender {
             Some(ref mut pointer_client) => pointer_client.send_text(text).await,
-            None => Err(WebSocketErrorAction::Fatal),
+            None => Err(WebSocketError::Fatal),
         }
     }
 }

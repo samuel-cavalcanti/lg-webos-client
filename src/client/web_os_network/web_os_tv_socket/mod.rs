@@ -9,6 +9,6 @@ mod receive_trait;
 mod send_trait;
 mod tv_send_to_websocket_stream;
 
-pub use error_action::WebSocketErrorAction;
+pub use error_action::WebSocketError;
 pub use receive_trait::WebOsSocketTvReceive;
 pub use send_trait::WebOsSocketTvSend;
