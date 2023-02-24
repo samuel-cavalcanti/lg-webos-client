@@ -1,7 +1,7 @@
 use lg_webos_client::{
     client::{
         SendLgCommandRequest, SendPointerCommandRequest, WebOsClient, WebOsClientConfig,
-        WebSocketErrorAction,
+        WebSocketError,
     },
     lg_command::{
         pointer_input_commands::ButtonKey, CommandRequest, LGCommandRequest, REQUEST_TYPE,
@@ -24,7 +24,7 @@ impl LGCommandRequest for NewCommand {
 }
 
 #[tokio::main]
-async fn main() -> Result<(), WebSocketErrorAction> {
+async fn main() -> Result<(), WebSocketError> {
     env_logger::init();
 
     // Note: We must specify the ws protocol, and if we do not have the key, we just specify None.

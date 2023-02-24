@@ -21,7 +21,8 @@ pinky-swear = "5.1.0"
 log = "0.4.0"
 env_logger = "0.8.4"
 async-trait = "0.1.52"
+ssdp = { git = "https://github.com/samuel-cavalcanti/ssdp-rs.git", branch = "rust-2021" }
+regex = "1.7.1"
 
 [dev-dependencies]
-
 tokio = { version = "1.2.0", default-features = false, features = ["full"] }
