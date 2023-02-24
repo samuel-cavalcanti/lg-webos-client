@@ -1,7 +1,4 @@
-use std::{
-    net::{Ipv4Addr, SocketAddr},
-    ptr::addr_of,
-};
+use std::net::SocketAddr;
 
 use regex::Regex;
 use ssdp::{
