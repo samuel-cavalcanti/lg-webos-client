@@ -99,3 +99,19 @@ impl SendPointerCommandRequest for WebOsClient {
         }
     }
 }
+
+#[async_trait]
+impl SendPointerCommandRequest for &mut WebOsClient {
+    async fn send_pointer_input_command_to_tv<R: PointerInputCommand>(
+        &mut self,
+        cmd: R,
+    ) -> Result<(), WebSocketError> {
+        self.try_to_connect_pointer_client().await?;
+
+        let text = cmd.to_request_string();
+        match self.pointer_input_sender {
+            Some(ref mut pointer_client) => pointer_client.send_text(text).await,
+            None => Err(WebSocketError::Fatal),
+        }
+    }
+}
