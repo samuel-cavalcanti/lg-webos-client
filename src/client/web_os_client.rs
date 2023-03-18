@@ -16,7 +16,7 @@ use super::{SendLgCommandRequest, SendPointerCommandRequest};
 
 /// Client for interacting with TV
 pub struct WebOsClient {
-    pub key: Option<String>,
+    pub key: String,
     request_sender: Box<dyn WebOsTvRequestCommunication>,
     pointer_input_sender: Option<Box<dyn WebOsSocketTvSend>>,
 }
@@ -27,7 +27,7 @@ impl WebOsClient {
         debug!("connected with TV");
 
         let client = WebOsClient {
-            key: Some(tv_connection.key),
+            key: tv_connection.key,
             request_sender: tv_connection.request_sender,
 
             pointer_input_sender: None,
