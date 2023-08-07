@@ -12,7 +12,9 @@ async fn main() {
     // Execute this example with the TV on
     let tv_info = discovery::discovery_webostv_by_ssdp().await.unwrap();
 
-    let tv_ip = tv_info.ip;
+    let tv_info = &tv_info[0];
+
+    let tv_ip = &tv_info.ip;
     let config = WebOsClientConfig {
         address: format!("ws://{tv_ip}:3000/"),
         key: None,

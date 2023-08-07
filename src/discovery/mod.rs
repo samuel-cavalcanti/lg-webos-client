@@ -1,9 +1,10 @@
-use std::net::SocketAddr;
+use std::{collections::HashMap, net::SocketAddr};
 
 use regex::Regex;
 use ssdp::{
     header::{HeaderMut, HeaderRef, Man, Server, MX, ST},
     message::{Multicast, SearchRequest, SearchResponse},
+    SSDPError,
 };
 
 #[derive(Debug)]
@@ -15,13 +16,10 @@ pub struct WebOsNetworkInfo {
 }
 
 /*
-
     SSDP mean Simple Service Discovery Protocol
-
-    this will send SSDP search packages to find the TV. The TV must be on.
-    The search will stop  when it  Finded the First TV
+    this will send SSDP search packages find the TV. The TV must be on.
 */
-pub async fn discovery_webostv_by_ssdp() -> Option<WebOsNetworkInfo> {
+pub async fn discovery_webostv_by_ssdp() -> Result<Vec<WebOsNetworkInfo>, SSDPError> {
     let mut request = SearchRequest::new();
     request.set(Man);
     request.set(ST::All);
@@ -29,19 +27,22 @@ pub async fn discovery_webostv_by_ssdp() -> Option<WebOsNetworkInfo> {
     let responses = match request.multicast() {
         Ok(responses) => responses,
         Err(e) => {
-            log::error!("Error on send multicast request {e}");
-            return None;
+            log::error!("Error on send multicast request. Error:{e:?}");
+            return Err(e);
         }
     };
+
+    let mut tvs: HashMap<String, _> = HashMap::new();
     for (response, src) in responses {
-        log::info!("ssdp reponse: {response:?}");
+        log::trace!("ssdp reponse: {response:?}");
         let tv_network = parse_response(response, src);
-        log::debug!("Found TV: {tv_network:?}");
-        if tv_network.is_some() {
-            return tv_network;
+        log::trace!("Found TV: {tv_network:?}");
+        if let Some(tv) = tv_network {
+            tvs.insert(tv.ip.clone(),tv);
+            //tvs.push(tv);
         }
     }
-    None
+    Ok(tvs.into_values().collect())
 }
 
 fn parse_response(response: SearchResponse, address: SocketAddr) -> Option<WebOsNetworkInfo> {
