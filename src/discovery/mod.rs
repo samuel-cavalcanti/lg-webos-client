@@ -7,7 +7,7 @@ use ssdp::{
     SSDPError,
 };
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct WebOsNetworkInfo {
     pub name: String,
     pub ip: String,
@@ -38,7 +38,7 @@ pub async fn discovery_webostv_by_ssdp() -> Result<Vec<WebOsNetworkInfo>, SSDPEr
         let tv_network = parse_response(response, src);
         log::trace!("Found TV: {tv_network:?}");
         if let Some(tv) = tv_network {
-            tvs.insert(tv.ip.clone(),tv);
+            tvs.insert(tv.ip.clone(), tv);
             //tvs.push(tv);
         }
     }

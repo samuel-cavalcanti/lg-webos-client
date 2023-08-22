@@ -17,10 +17,10 @@ async fn main() {
     let tv_ip = &tv_info.ip;
     let config = WebOsClientConfig {
         address: format!("ws://{tv_ip}:3000/"),
-        key: None,
+        key: Some("2b61b97a6f97ce0325110c0a090f7874".to_string()),
     };
     // Look to your TV and  Accept the connection
-    let mut client = WebOsClient::connect(config).await.unwrap();
+    let mut client = WebOsClient::connect(config.clone()).await.unwrap();
 
     thread::sleep(Duration::from_secs(1));
 
@@ -32,4 +32,14 @@ async fn main() {
     wake_on_lan::send_magic_packet_to_address(magic_package, &format!("{tv_ip}:9"))
         .await
         .unwrap();
+
+    let mut tv_info = discovery::discovery_webostv_by_ssdp().await.unwrap();
+    while tv_info.is_empty() {
+        tv_info = discovery::discovery_webostv_by_ssdp().await.unwrap();
+    }
+    client = WebOsClient::connect(config).await.unwrap();
+
+    thread::sleep(Duration::from_secs(1));
+
+    client.send_lg_command_to_tv(TurnOffTV).await.unwrap();
 }
