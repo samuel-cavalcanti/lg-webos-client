@@ -60,7 +60,7 @@ pub async fn send_magic_packet_to_broadcast(package: MagicPacket) -> io::Result<
     Ok(())
 }
 
-/// Sends the magic packet to especific address
+/// Sends the magic packet to especific address, expected that address has port 9
 pub async fn send_magic_packet_to_address(
     package: MagicPacket,
     ip_address: &str,
