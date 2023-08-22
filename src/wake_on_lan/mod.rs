@@ -65,7 +65,7 @@ pub async fn send_magic_packet_to_address(
     package: MagicPacket,
     ip_address: &str,
 ) -> io::Result<()> {
-    let socket = UdpSocket::bind("0.0.0.0:8000").await?;
+    let socket = UdpSocket::bind("0.0.0.0:0").await?;
     socket
         .send_to(package.magic_bytes.as_slice(), ip_address)
         .await?;
