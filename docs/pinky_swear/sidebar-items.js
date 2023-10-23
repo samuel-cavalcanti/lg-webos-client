@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["Pinky","PinkyBroadcaster","PinkySwear"],"trait":["Cancellable"]};

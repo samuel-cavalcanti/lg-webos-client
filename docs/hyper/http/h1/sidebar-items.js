@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["CR","LF","LINE_ENDING"],"enum":["HttpReader","HttpWriter"],"fn":["parse_request","parse_response"],"struct":["EndError","Http11Message","Http11Protocol","Incoming"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["FieldMap","IpVersionMode","SSDPErrorKind"],"mod":["header","message"],"struct":["SSDPError","SSDPIter","SSDPReceiver"],"trait":["SSDPResultExt"],"type":["SSDPResult"]};

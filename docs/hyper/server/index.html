@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="HTTP Server"><title>hyper::server - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="hyper" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../../hyper/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2></h2></nav><nav class="sidebar"><a class="logo-container" href="../../hyper/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2 class="location"><a href="#">Module server</a></h2><div class="sidebar-elems"><section><ul class="block"><li><a href="#reexports">Re-exports</a></li><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#traits">Traits</a></li></ul></section></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Module <a href="../index.html">hyper</a>::<wbr><a class="mod" href="#">server</a><button id="copy-path" title="Copy item path to clipboard"><img src="../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="src" href="../../src/hyper/server/mod.rs.html#1-494">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>HTTP Server</p>
+<h2 id="server"><a href="#server">Server</a></h2>
+<p>A <code>Server</code> is created to listen on port, parse HTTP requests, and hand
+them off to a <code>Handler</code>. By default, the Server will listen across multiple
+threads, but that can be configured to a single thread if preferred.</p>
+<h2 id="handling-requests"><a href="#handling-requests">Handling requests</a></h2>
+<p>You must pass a <code>Handler</code> to the Server that will handle requests. There is
+a default implementation for <code>fn</code>s and closures, allowing you pass one of
+those easily.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>hyper::server::{Server, Request, Response};
+
+<span class="kw">fn </span>hello(req: Request, res: Response) {
+    <span class="comment">// handle things here
+</span>}
+
+Server::http(<span class="string">&quot;0.0.0.0:0&quot;</span>).unwrap().handle(hello).unwrap();</code></pre></div>
+<p>As with any trait, you can also define a struct and implement <code>Handler</code>
+directly on your own type, and pass that to the <code>Server</code> instead.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>std::sync::Mutex;
+<span class="kw">use </span>std::sync::mpsc::{channel, Sender};
+<span class="kw">use </span>hyper::server::{Handler, Server, Request, Response};
+
+<span class="kw">struct </span>SenderHandler {
+    sender: Mutex&lt;Sender&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt;&gt;
+}
+
+<span class="kw">impl </span>Handler <span class="kw">for </span>SenderHandler {
+    <span class="kw">fn </span>handle(<span class="kw-2">&amp;</span><span class="self">self</span>, req: Request, res: Response) {
+        <span class="self">self</span>.sender.lock().unwrap().send(<span class="string">&quot;start&quot;</span>).unwrap();
+    }
+}
+
+
+<span class="kw">let </span>(tx, rx) = channel();
+Server::http(<span class="string">&quot;0.0.0.0:0&quot;</span>).unwrap().handle(SenderHandler {
+    sender: Mutex::new(tx)
+}).unwrap();</code></pre></div>
+<p>Since the <code>Server</code> will be listening on multiple threads, the <code>Handler</code>
+must implement <code>Sync</code>: any mutable state must be synchronized.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>std::sync::atomic::{AtomicUsize, Ordering};
+<span class="kw">use </span>hyper::server::{Server, Request, Response};
+
+<span class="kw">let </span>counter = AtomicUsize::new(<span class="number">0</span>);
+Server::http(<span class="string">&quot;0.0.0.0:0&quot;</span>).unwrap().handle(<span class="kw">move </span>|req: Request, res: Response| {
+    counter.fetch_add(<span class="number">1</span>, Ordering::Relaxed);
+}).unwrap();</code></pre></div>
+<h2 id="the-request-and-response-pair"><a href="#the-request-and-response-pair">The <code>Request</code> and <code>Response</code> pair</a></h2>
+<p>A <code>Handler</code> receives a pair of arguments, a <code>Request</code> and a <code>Response</code>. The
+<code>Request</code> includes access to the <code>method</code>, <code>uri</code>, and <code>headers</code> of the
+incoming HTTP request. It also implements <code>std::io::Read</code>, in order to
+read any body, such as with <code>POST</code> or <code>PUT</code> messages.</p>
+<p>Likewise, the <code>Response</code> includes ways to set the <code>status</code> and <code>headers</code>,
+and implements <code>std::io::Write</code> to allow writing the response body.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>std::io;
+<span class="kw">use </span>hyper::server::{Server, Request, Response};
+<span class="kw">use </span>hyper::status::StatusCode;
+
+Server::http(<span class="string">&quot;0.0.0.0:0&quot;</span>).unwrap().handle(|<span class="kw-2">mut </span>req: Request, <span class="kw-2">mut </span>res: Response| {
+    <span class="kw">match </span>req.method {
+        hyper::Post =&gt; {
+            io::copy(<span class="kw-2">&amp;mut </span>req, <span class="kw-2">&amp;mut </span>res.start().unwrap()).unwrap();
+        },
+        <span class="kw">_ </span>=&gt; <span class="kw-2">*</span>res.status_mut() = StatusCode::MethodNotAllowed
+    }
+}).unwrap();</code></pre></div>
+<h3 id="an-aside-write-status"><a href="#an-aside-write-status">An aside: Write Status</a></h3>
+<p>The <code>Response</code> uses a phantom type parameter to determine its write status.
+What does that mean? In short, it ensures you never write a body before
+adding all headers, and never add a header after writing some of the body.</p>
+<p>This is often done in most implementations by include a boolean property
+on the response, such as <code>headers_written</code>, checking that each time the
+body has something to write, so as to make sure the headers are sent once,
+and only once. But this has 2 downsides:</p>
+<ol>
+<li>You are typically never notified that your late header is doing nothing.</li>
+<li>There’s a runtime cost to checking on every write.</li>
+</ol>
+<p>Instead, hyper handles this statically, or at compile-time. A
+<code>Response&lt;Fresh&gt;</code> includes a <code>headers_mut()</code> method, allowing you add more
+headers. It also does not implement <code>Write</code>, so you can’t accidentally
+write early. Once the “head” of the response is correct, you can “send” it
+out by calling <code>start</code> on the <code>Response&lt;Fresh&gt;</code>. This will return a new
+<code>Response&lt;Streaming&gt;</code> object, that no longer has <code>headers_mut()</code>, but does
+implement <code>Write</code>.</p>
+</div></details><h2 id="reexports" class="small-section-header"><a href="#reexports">Re-exports</a></h2><ul class="item-table"><li><div class="item-name" id="reexport.Request"><code>pub use self::request::<a class="struct" href="request/struct.Request.html" title="struct hyper::server::request::Request">Request</a>;</code></div></li><li><div class="item-name" id="reexport.Response"><code>pub use self::response::<a class="struct" href="response/struct.Response.html" title="struct hyper::server::response::Response">Response</a>;</code></div></li><li><div class="item-name" id="reexport.Fresh"><code>pub use net::<a class="enum" href="../net/enum.Fresh.html" title="enum hyper::net::Fresh">Fresh</a>;</code></div></li><li><div class="item-name" id="reexport.Streaming"><code>pub use net::<a class="enum" href="../net/enum.Streaming.html" title="enum hyper::net::Streaming">Streaming</a>;</code></div></li></ul><h2 id="modules" class="small-section-header"><a href="#modules">Modules</a></h2><ul class="item-table"><li><div class="item-name"><a class="mod" href="request/index.html" title="mod hyper::server::request">request</a></div><div class="desc docblock-short">Server Requests</div></li><li><div class="item-name"><a class="mod" href="response/index.html" title="mod hyper::server::response">response</a></div><div class="desc docblock-short">Server Responses</div></li></ul><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2><ul class="item-table"><li><div class="item-name"><a class="struct" href="struct.Listening.html" title="struct hyper::server::Listening">Listening</a></div><div class="desc docblock-short">A listening server, which can later be closed.</div></li><li><div class="item-name"><a class="struct" href="struct.Server.html" title="struct hyper::server::Server">Server</a></div><div class="desc docblock-short">A server can listen on a TCP socket.</div></li></ul><h2 id="traits" class="small-section-header"><a href="#traits">Traits</a></h2><ul class="item-table"><li><div class="item-name"><a class="trait" href="trait.Handler.html" title="trait hyper::server::Handler">Handler</a></div><div class="desc docblock-short">A handler that can handle incoming requests for a server.</div></li></ul></section></div></main></body></html>
