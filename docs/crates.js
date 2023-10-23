@@ -1,1 +1,1 @@
-window.ALL_CRATES = ["lg_webos_client"];
+window.ALL_CRATES = ["cfg_if","futures_core","lg_webos_client","memchr","pin_project_lite","tinyvec_macros","unicode_ident"];
