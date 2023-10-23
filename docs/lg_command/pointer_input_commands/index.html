@@ -1,0 +1,97 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Pointer Inputs Commands Module"><title>lg_webos_client::lg_command::pointer_input_commands - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="lg_webos_client" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../../../lg_webos_client/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2></h2></nav><nav class="sidebar"><a class="logo-container" href="../../../lg_webos_client/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2 class="location"><a href="#">Module pointer_input_commands</a></h2><div class="sidebar-elems"><section><ul class="block"><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#traits">Traits</a></li></ul></section></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Module <a href="../../index.html">lg_webos_client</a>::<wbr><a href="../index.html">lg_command</a>::<wbr><a class="mod" href="#">pointer_input_commands</a><button id="copy-path" title="Copy item path to clipboard"><img src="../../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="src" href="../../../src/lg_webos_client/lg_command/pointer_input_commands/mod.rs.html#1-125">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="pointer-inputs-commands-module"><a href="#pointer-inputs-commands-module">Pointer Inputs Commands Module</a></h2>
+<p>Pointer Inputs has commnads like: <strong>home</strong>,<strong>back</strong>,<strong>Enter</strong> and can control the <strong>position</strong> of
+Webos’s Mouse and the <strong>scroll</strong>. If you want to control the mouse see <a href="struct.Pointer.html" title="struct lg_webos_client::lg_command::pointer_input_commands::Pointer"><code>Pointer</code></a> commnads,
+if you and to know about the mouse’s special buttons see <a href="enum.ButtonKey.html" title="enum lg_webos_client::lg_command::pointer_input_commands::ButtonKey"><code>ButtonKey</code></a>.</p>
+<h3 id="pointer-control-example"><a href="#pointer-control-example">Pointer Control Example</a></h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>lg_webos_client::client::SendPointerCommandRequest;
+<span class="kw">use </span>lg_webos_client::lg_command::pointer_input_commands::Pointer;
+
+<span class="kw">const </span>DRAG:bool = <span class="bool-val">false</span>;
+<span class="kw">const </span>DS:f32 = <span class="number">5.0</span>;
+<span class="kw">async fn </span>move_left&lt;C:SendPointerCommandRequest&gt;(client: <span class="kw-2">&amp;mut </span>C){
+
+   <span class="kw">let </span>left =Pointer::move_it(-DS, <span class="number">0.0</span>, DRAG);
+   
+   <span class="kw">let </span>_result = client.send_pointer_input_command_to_tv(left).<span class="kw">await</span>;
+
+}
+<span class="kw">async fn </span>move_right&lt;C:SendPointerCommandRequest&gt;(client: <span class="kw-2">&amp;mut </span>C){
+
+    <span class="kw">let </span>right = Pointer::move_it(DS, <span class="number">0.0</span>, DRAG);
+   
+   <span class="kw">let </span>_result = client.send_pointer_input_command_to_tv(right).<span class="kw">await</span>;
+
+}
+
+<span class="kw">async fn </span>move_up&lt;C:SendPointerCommandRequest&gt;(client: <span class="kw-2">&amp;mut </span>C){
+   
+   <span class="kw">let </span>up = Pointer::move_it(<span class="number">0.0</span>, -DS, DRAG);
+   <span class="kw">let </span>_result = client.send_pointer_input_command_to_tv(up).<span class="kw">await</span>;
+
+}
+
+<span class="kw">async fn </span>move_down&lt;C:SendPointerCommandRequest&gt;(client: <span class="kw-2">&amp;mut </span>C){
+   
+   <span class="kw">let </span>down = Pointer::move_it(<span class="number">0.0</span>, DS, DRAG);
+   <span class="kw">let </span>_result = client.send_pointer_input_command_to_tv(down).<span class="kw">await</span>;
+
+}
+
+<span class="kw">async fn </span>click&lt;C:SendPointerCommandRequest&gt;(client: <span class="kw-2">&amp;mut </span>C){
+   
+   <span class="kw">let </span>_result = client.send_pointer_input_command_to_tv(Pointer::click()).<span class="kw">await</span>;
+
+}
+
+
+<span class="kw">async fn </span>scroll_down&lt;C:SendPointerCommandRequest&gt;(client: <span class="kw-2">&amp;mut </span>C){
+   
+   <span class="kw">let </span>_result = client.send_pointer_input_command_to_tv(Pointer::scroll(<span class="number">0.0</span>,DS)).<span class="kw">await</span>;
+
+}
+
+<span class="kw">async fn </span>scroll_up&lt;C:SendPointerCommandRequest&gt;(client: <span class="kw-2">&amp;mut </span>C){
+   
+   <span class="kw">let </span>_result = client.send_pointer_input_command_to_tv(Pointer::scroll(<span class="number">0.0</span>,-DS)).<span class="kw">await</span>;
+
+}</code></pre></div>
+<h3 id="mouse-especial-keys-example"><a href="#mouse-especial-keys-example">Mouse Especial Keys Example</a></h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>lg_webos_client::client::SendPointerCommandRequest;
+<span class="kw">use </span>lg_webos_client::lg_command::pointer_input_commands::ButtonKey;
+
+<span class="kw">async fn </span>press_home&lt;C:SendPointerCommandRequest&gt;(client: <span class="kw-2">&amp;mut </span>C){
+   
+   <span class="kw">let </span>_result = client.send_pointer_input_command_to_tv(ButtonKey::HOME).<span class="kw">await</span>;
+
+}
+
+<span class="kw">async fn </span>press_back&lt;C:SendPointerCommandRequest&gt;(client: <span class="kw-2">&amp;mut </span>C){
+   
+   <span class="kw">let </span>_result = client.send_pointer_input_command_to_tv(ButtonKey::BACK).<span class="kw">await</span>;
+
+}
+
+<span class="kw">async fn </span>press_left&lt;C:SendPointerCommandRequest&gt;(client: <span class="kw-2">&amp;mut </span>C){
+   
+   <span class="kw">let </span>_result = client.send_pointer_input_command_to_tv(ButtonKey::LEFT).<span class="kw">await</span>;
+
+}
+
+<span class="kw">async fn </span>press_right&lt;C:SendPointerCommandRequest&gt;(client: <span class="kw-2">&amp;mut </span>C){
+   
+   <span class="kw">let </span>_result = client.send_pointer_input_command_to_tv(ButtonKey::RIGHT).<span class="kw">await</span>;
+
+}
+
+<span class="kw">async fn </span>press_up&lt;C:SendPointerCommandRequest&gt;(client: <span class="kw-2">&amp;mut </span>C){
+   
+   <span class="kw">let </span>_result = client.send_pointer_input_command_to_tv(ButtonKey::UP).<span class="kw">await</span>;
+
+}
+
+<span class="kw">async fn </span>press_down&lt;C:SendPointerCommandRequest&gt;(client: <span class="kw-2">&amp;mut </span>C){
+   
+   <span class="kw">let </span>_result = client.send_pointer_input_command_to_tv(ButtonKey::DOWN).<span class="kw">await</span>;
+
+}</code></pre></div>
+</div></details><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2><ul class="item-table"><li><div class="item-name"><a class="struct" href="struct.Pointer.html" title="struct lg_webos_client::lg_command::pointer_input_commands::Pointer">Pointer</a></div><div class="desc docblock-short">The commands for Move,click and scroll the Webos’s mouses</div></li></ul><h2 id="enums" class="small-section-header"><a href="#enums">Enums</a></h2><ul class="item-table"><li><div class="item-name"><a class="enum" href="enum.ButtonKey.html" title="enum lg_webos_client::lg_command::pointer_input_commands::ButtonKey">ButtonKey</a></div><div class="desc docblock-short">The mouse special Buttons</div></li></ul><h2 id="traits" class="small-section-header"><a href="#traits">Traits</a></h2><ul class="item-table"><li><div class="item-name"><a class="trait" href="trait.PointerInputCommand.html" title="trait lg_webos_client::lg_command::pointer_input_commands::PointerInputCommand">PointerInputCommand</a></div><div class="desc docblock-short">This trait Represents WebOS Pointer Request</div></li></ul></section></div></main></body></html>
