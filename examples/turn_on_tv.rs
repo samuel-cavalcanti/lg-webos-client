@@ -28,10 +28,7 @@ async fn main() {
 
     thread::sleep(Duration::from_secs(1));
 
-    let magic_package = wake_on_lan::MagicPacket::from_mac_string(&tv_info.mac_address).unwrap();
-    wake_on_lan::send_magic_packet_to_address(magic_package, &format!("{tv_ip}:9"))
-        .await
-        .unwrap();
+    turn_on_tv(&tv_info.ip, &tv_info.mac_address).await;
 
     let mut tv_info = discovery::discovery_webostv_by_ssdp().await.unwrap();
     while tv_info.is_empty() {
@@ -42,4 +39,11 @@ async fn main() {
     thread::sleep(Duration::from_secs(1));
 
     client.send_lg_command_to_tv(TurnOffTV).await.unwrap();
+}
+
+async fn turn_on_tv(ip: &str, mac: &str) {
+    let magic_package = wake_on_lan::MagicPacket::from_mac_string(mac).unwrap();
+    wake_on_lan::send_magic_packet_to_address(magic_package, &format!("{ip}:9"))
+        .await
+        .unwrap();
 }

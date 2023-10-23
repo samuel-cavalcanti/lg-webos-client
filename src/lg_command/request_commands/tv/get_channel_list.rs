@@ -1,6 +1,7 @@
 use crate::lg_command::REQUEST_TYPE;
 use crate::lg_command::{CommandRequest, LGCommandRequest};
 
+/// Use this command to receive a Json with all channels avalable.
 pub struct GetChannelList;
 
 impl LGCommandRequest for GetChannelList {

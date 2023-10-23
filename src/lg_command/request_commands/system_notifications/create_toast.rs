@@ -3,6 +3,7 @@ use serde_json::json;
 use crate::lg_command::REQUEST_TYPE;
 use crate::lg_command::{CommandRequest, LGCommandRequest};
 
+/// Create a Toast Message to Tv
 pub struct CreateToast {
     pub message: String,
 }

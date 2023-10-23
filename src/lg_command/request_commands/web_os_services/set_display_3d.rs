@@ -1,5 +1,6 @@
 use crate::lg_command::{CommandRequest, LGCommandRequest, REQUEST_TYPE};
 
+/// This command wasn't tested
 pub struct SetDisplay3D {
     pub turn_3d: bool,
 }

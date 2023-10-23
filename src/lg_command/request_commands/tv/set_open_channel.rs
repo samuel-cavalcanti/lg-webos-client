@@ -3,6 +3,7 @@ use serde_json::json;
 use crate::lg_command::REQUEST_TYPE;
 use crate::lg_command::{CommandRequest, LGCommandRequest};
 
+/// Set the channel that you like
 pub struct SetOpenChannel {
     pub channel_id: String,
 }

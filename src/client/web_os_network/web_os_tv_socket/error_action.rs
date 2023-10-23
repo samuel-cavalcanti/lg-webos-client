@@ -1,15 +1,14 @@
+use log::error;
 use tokio_tungstenite::tungstenite;
 
-use log::error;
-
 #[derive(Debug, Clone)]
+/// Error on WebSocket Connection
+/// There are two kinds of erros: Fatal and Continue
 pub enum WebSocketError {
-    /*
-        Some Networks erros can be ignored, so I use ResponseErrosAction::Continue,
-        otherwise  the networking connection must be finish.
-
-    */
+    /// When A Fatal error occurs, then you must close the WebSocket Connection  
+    /// Maybe Restart the Connection works
     Fatal,
+    /// When A Continue Error Occurs, the you can ignore it
     Continue,
 }
 

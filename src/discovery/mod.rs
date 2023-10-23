@@ -1,3 +1,9 @@
+//! # Discovery module: Protocol to Discovery WebOs Tvs
+//!
+//!Currently only **SSDP** search is supported, maybe can you mDNS to find tvs too.
+//!To find a TV with SSDP just call [`discovery_webostv_by_ssdp`].
+//!
+
 use std::{collections::HashMap, net::SocketAddr};
 
 use regex::Regex;
@@ -8,17 +14,20 @@ use ssdp::{
 };
 
 #[derive(Debug, Clone)]
+/// All Network information that's necessary to connect and turn on the TV
 pub struct WebOsNetworkInfo {
+    /// The TV name or some id
     pub name: String,
+    /// The IPV4 of the TV
     pub ip: String,
-    // The mac address is need to Turn on the TV using Wake On LAN (WOL)
+    /// The mac address is need to Turn on the TV using Wake On LAN (WOL)
     pub mac_address: String,
 }
 
-/*
-    SSDP mean Simple Service Discovery Protocol
-    this will send SSDP search packages find the TV. The TV must be on.
-*/
+///SSDP mean Simple Service Discovery Protocol
+///this will send SSDP search packages find the TV. The TV must be on.
+///The function returns an array of [`WebOsNetworkInfo`] if the array is empty
+///so any tv weren't found.
 pub async fn discovery_webostv_by_ssdp() -> Result<Vec<WebOsNetworkInfo>, SSDPError> {
     let mut request = SearchRequest::new();
     request.set(Man);

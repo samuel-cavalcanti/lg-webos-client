@@ -1,5 +1,6 @@
 use super::PointerInputCommand;
 
+/// The mouse special Buttons
 pub enum ButtonKey {
     Num0,
     Num1,

@@ -1,3 +1,27 @@
+//! # Wake On Lan module: A Protocol to turn on the TV
+//!
+//! To Turn on the TV you can use the
+//! [**Wake On Lan** Protocol](https://en.wikipedia.org/wiki/Wake-on-LAN)
+//! To turn on the TV you will need to know the MAC address, and the IP
+//!
+//!## Turn On Example:
+//!
+//!```
+//!use lg_webos_client::wake_on_lan;
+//!
+//!
+//!async fn turn_on_tv(ip: &str, mac: &str) {
+//!    let magic_package = wake_on_lan::MagicPacket::from_mac_string(mac).unwrap();
+//!    wake_on_lan::send_magic_packet_to_address(magic_package, &format!("{ip}:9")).await
+//!        .unwrap();
+//!}
+//!
+//!turn_on_tv("192.168.0.199","a4:a2:22:a7:ff:3f");
+//!```
+//!
+//!
+//!
+//!
 use regex::Regex;
 use tokio::{io, net::UdpSocket};
 
@@ -5,8 +29,12 @@ pub struct MagicPacket {
     magic_bytes: Vec<u8>,
 }
 
+/// ```
+/// use lg_webos_client::wake_on_lan::string_to_bytes_mac_address;
+///
 /// let mac_bytes = string_to_bytes_mac_address("a4:a2:22:a7:ff:3f").unwrap();
 /// assert_eq!(vec![0xa4,0xa2,0x22,0xa7,0xff,0x3f], mac_bytes);
+/// ```
 pub fn string_to_bytes_mac_address(mac_address: &str) -> Option<Vec<u8>> {
     let hex = r"([[:xdigit:]]{2})";
     let regex = Regex::new(&format!("{hex}:{hex}:{hex}:{hex}:{hex}:{hex}")).unwrap();
@@ -61,13 +89,18 @@ pub async fn send_magic_packet_to_broadcast(package: MagicPacket) -> io::Result<
 }
 
 /// Sends the magic packet to especific address, expected that address has port 9
-pub async fn send_magic_packet_to_address(
-    package: MagicPacket,
-    ip_address: &str,
-) -> io::Result<()> {
+/// ```
+///  use lg_webos_client::wake_on_lan::send_magic_packet_to_address;
+///  use lg_webos_client::wake_on_lan::MagicPacket;
+///
+///
+///  let packet = MagicPacket::from_mac_string("a4:a2:22:a7:ff:3f").unwrap();
+///  send_magic_packet_to_address(packet,"192.168.0.199:9");
+/// ```
+pub async fn send_magic_packet_to_address(package: MagicPacket, address: &str) -> io::Result<()> {
     let socket = UdpSocket::bind("0.0.0.0:0").await?;
     socket
-        .send_to(package.magic_bytes.as_slice(), ip_address)
+        .send_to(package.magic_bytes.as_slice(), address)
         .await?;
 
     Ok(())

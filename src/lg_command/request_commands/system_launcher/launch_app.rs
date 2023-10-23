@@ -1,6 +1,9 @@
 use crate::lg_command::{CommandRequest, LGCommandRequest, REQUEST_TYPE};
 use serde_json::{json, Value};
 
+/// Open an Aplication on WebOs.
+/// To Launch an App you must to know the **app_id**
+/// You can get know all the avalable apps using `ListApps` commands
 pub struct LaunchApp {
     pub app_id: Option<String>,
     pub name: Option<String>,

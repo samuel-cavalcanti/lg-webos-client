@@ -3,6 +3,8 @@ use serde_json::json;
 use crate::lg_command::REQUEST_TYPE;
 use crate::lg_command::{CommandRequest, LGCommandRequest};
 
+/// You Can get the Input Id using `GetExternalInputList`, than set the Input
+/// using `SwitchInput`
 pub struct SwitchInput {
     pub input_id: String,
 }

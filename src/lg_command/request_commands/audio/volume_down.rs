@@ -1,5 +1,6 @@
 use crate::lg_command::{CommandRequest, LGCommandRequest, REQUEST_TYPE};
 
+/// Decrease the Volume, like **volume -=1**
 pub struct VolumeDown;
 
 impl LGCommandRequest for VolumeDown {

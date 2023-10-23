@@ -1,3 +1,10 @@
+//! # WebOsClient
+//!
+//! This Client Connect to TV, though WebSocket connection.
+//! [`WebOsClient`] struct holds the WebSocket Connetion.
+//!  To create a Client you must know the Ip address of client, if the Operation system have
+//!  mDns support than you can use: "lgwebostv.local"
+//!
 use async_trait::async_trait;
 use log::debug;
 
@@ -14,10 +21,15 @@ use crate::lg_command::LGCommandRequest;
 use super::web_os_network::{WebOsSocketTvSend, WebOsTvRequestCommunication, WebSocketError};
 use super::{SendLgCommandRequest, SendPointerCommandRequest};
 
-/// Client for interacting with TV
+/// Client for interacting with TV. This client only can used if the connection is successul,
 pub struct WebOsClient {
+    // Every successul conection has a Token key
     pub key: String,
+    /// A pointer to WebSocket Connection. This is the main connection with the Tv
+    /// though this connection the client can send `LGCommandRequest`
     request_sender: Box<dyn WebOsTvRequestCommunication>,
+    /// A pointer to WebSocket Connection, but this connection is responsable to control the WebOs
+    /// pointer
     pointer_input_sender: Option<Box<dyn WebOsSocketTvSend>>,
 }
 

@@ -1,5 +1,6 @@
 use crate::lg_command::{CommandRequest, LGCommandRequest, REQUEST_TYPE};
 
+/// Is the same of clicking in enter button in the virtual keyborad
 pub struct SendEnterKey;
 
 impl LGCommandRequest for SendEnterKey {

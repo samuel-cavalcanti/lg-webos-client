@@ -2,6 +2,7 @@ use serde_json::json;
 
 use crate::lg_command::{CommandRequest, LGCommandRequest, REQUEST_TYPE};
 
+/// To delete text in virtual keyboard, you must set the number of chars to be deleted.
 pub struct DeleteCharacters {
     pub number_of_chars: usize,
 }

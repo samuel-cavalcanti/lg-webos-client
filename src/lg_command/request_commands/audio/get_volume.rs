@@ -1,6 +1,7 @@
 use crate::lg_command::REQUEST_TYPE;
 use crate::lg_command::{CommandRequest, LGCommandRequest};
 
+// Return a json that contains the current volume
 pub struct GetVolume;
 
 impl LGCommandRequest for GetVolume {

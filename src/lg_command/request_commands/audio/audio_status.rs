@@ -1,6 +1,7 @@
 use crate::lg_command::REQUEST_TYPE;
 use crate::lg_command::{CommandRequest, LGCommandRequest};
 
+// Get a Json that represents a Audio Status
 pub struct AudioStatus;
 
 impl LGCommandRequest for AudioStatus {

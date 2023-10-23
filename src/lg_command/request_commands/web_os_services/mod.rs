@@ -1,11 +1,19 @@
+//! # WebOs Services Command Module
+//!
+//! This modules is related to "webos.service"  Uniform Resource.
+//! Currently it's possible to get the WebOs mouse Uri, and maybe create some keyboard application
+//! using `InsertText`, `DeleteCharacters``and `SendEnterKey`, But these three commands only work
+//! if a virtual keyboard is showed
+//!
+//! Consider to Not use `GetPointerInputSocketUri`, use the `WebOsClient` with `SendPointerCommandRequest` instead
+//!
+//! maybe in the future will have a keyboard abstraction.
+//!
+
 mod get_current_services_information_list;
 mod get_pointer_input_socket_uri;
 mod set_display_3d;
 
-/*
-    insert_text, send_enter_key, delete_characters
-    works only if a virtual keyboard is on screen.
-*/
 mod delete_characters;
 mod insert_text;
 mod send_enter_key;

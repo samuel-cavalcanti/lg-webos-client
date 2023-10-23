@@ -2,8 +2,11 @@ use serde_json::json;
 
 use crate::lg_command::{CommandRequest, LGCommandRequest, REQUEST_TYPE};
 
+/// Insert Text in virtual keyboard
 pub struct InsertText {
+    /// the Text in virutal keyboard
     pub text: String,
+    /// if you want to replace the the current text set replace to true
     pub replace: bool,
 }
 
