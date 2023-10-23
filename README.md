@@ -1,7 +1,5 @@
 # LG WebOs Client
 
-[docs](https://samuel-cavalcanti.github.io/lg-webos-client/)
-
 [![Build Status](https://app.travis-ci.com/samuel-cavalcanti/lg-webos-client.svg?branch=main)](https://app.travis-ci.com/samuel-cavalcanti/lg-webos-client)
 
 [![Rust](https://github.com/samuel-cavalcanti/lg-webos-client/actions/workflows/rust.yml/badge.svg)](https://github.com/samuel-cavalcanti/lg-webos-client/actions/workflows/rust.yml)

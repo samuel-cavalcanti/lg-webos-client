@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["ButtonKey"],"struct":["Pointer"],"trait":["PointerInputCommand"]};

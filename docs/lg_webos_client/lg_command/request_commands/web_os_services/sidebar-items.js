@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["DeleteCharacters","GetCurrentServicesInformationList","GetPointerInputSocketUri","InsertText","SendEnterKey","SetDisplay3D"]};

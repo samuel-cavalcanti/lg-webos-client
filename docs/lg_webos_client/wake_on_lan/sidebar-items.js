@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["send_magic_packet_to_address","send_magic_packet_to_broadcast","string_to_bytes_mac_address"],"struct":["MagicPacket"]};

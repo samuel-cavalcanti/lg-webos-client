@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["AudioStatus","GetVolume","SetMute","SetVolume","VolumeDown","VolumeUP"]};

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["ChannelDown","ChannelUp","GetChannelList","GetCurrentChannelInformation","GetExternalInputList","GetOpenChannelInformation","SetOpenChannel","SwitchInput"]};

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["client","discovery","lg_command","wake_on_lan"]};

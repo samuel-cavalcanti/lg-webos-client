@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"constant":["REQUEST_TYPE"],"mod":["pointer_input_commands","request_commands"],"struct":["CommandRequest","CommandResponse"],"trait":["LGCommandRequest"]};

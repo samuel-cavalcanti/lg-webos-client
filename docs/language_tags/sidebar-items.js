@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"constant":["GRANDFATHERED"],"enum":["Error"],"macro":["langtag"],"struct":["LanguageTag"],"type":["Result"]};

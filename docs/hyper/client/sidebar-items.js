@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["Body","RedirectPolicy"],"mod":["pool","request","response"],"struct":["Client","ProxyConfig","RequestBuilder"],"trait":["IntoUrl"]};
