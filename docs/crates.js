@@ -1,0 +1,1 @@
+window.ALL_CRATES = ["lg_webos_client"];
