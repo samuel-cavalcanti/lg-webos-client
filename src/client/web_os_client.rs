@@ -23,7 +23,7 @@ use super::{SendLgCommandRequest, SendPointerCommandRequest};
 
 /// Client for interacting with TV. This client only can used if the connection is successul,
 pub struct WebOsClient {
-    // Every successul conection has a Token key
+    /// Every successul conection has a Token key
     pub key: String,
     /// A pointer to WebSocket Connection. This is the main connection with the Tv
     /// though this connection the client can send `LGCommandRequest`
